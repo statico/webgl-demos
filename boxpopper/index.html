@@ -38,6 +38,9 @@
           <material_layer texture="#MAMaterial.001_TEXTURE0" mapinput="UV1" mapto="M_COLOR" />
         </material>
 
+        <texture_cube id="stars" src_pos_x="stars.png" src_neg_x="stars.png" src_pos_y="stars.png"
+          src_neg_y="stars.png" src_pos_z="stars.png" src_neg_z="stars.png" />
+
         <animation_vector id="spin" frames="300">
           <animation_curve channel="RotY">
             <linear_point x="1" y="0" />
@@ -47,11 +50,24 @@
 
         <camera id="maincamera" loc_z="20" />
 
-        <scene id="mainscene" camera="#maincamera" ambient_color="#fff">
+        <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#000">
           <light id="mainlight" loc_y="5" type="L_POINT" />
         </scene>
 
       </glge>
+    </script>
+
+    <script id="skyglsl" type="text/x-shader">
+      // From GLGE's examples/skydemo
+      precision highp float;
+
+      uniform samplerCube TEXTURE0;
+      varying vec2 texCoord;
+      varying vec3 rayCoord;
+
+      void main(void) {
+        gl_FragColor = textureCube(TEXTURE0, rayCoord.xyz);
+      }
     </script>
 
     <script src="../glge-compiled.js"></script>
@@ -76,6 +92,13 @@
         var renderer = new GLGE.Renderer(document.getElementById('canvas'));
         var scene = doc.getElement('mainscene');
         renderer.setScene(scene);
+
+        // Add starry skybox.
+        var filter = new GLGE.Filter2d;
+        scene.setSkyFilter(filter);
+        filter.addPass($('#skyglsl').html());
+        filter.setFilterType(GLGE.FILTER_SKY);
+        filter.addTexture(doc.getElement('stars'));
 
         // Animation loop
         (function animloop(){
