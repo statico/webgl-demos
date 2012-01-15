@@ -48,6 +48,14 @@
           </animation_curve>
         </animation_vector>
 
+        <animation_vector id="pop" frames="10">
+          <animation_curve channel="Scale">
+            <linear_point x="0" y="0" />
+            <linear_point x="7" y="1.2" />
+            <linear_point x="10" y="1" />
+          </animation_curve>
+        </animation_vector>
+
         <camera id="maincamera" loc_z="20" />
 
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#000">
@@ -118,11 +126,21 @@
 
         // Handle clicking
         canvas.on('click', function(e) {
+          var pop = new Audio;
+          pop.src = 'pop.ogg';
+          pop.play();
+
           var obj = new GLGE.Object;
           obj.setMesh(doc.getElement('sphere'));
           obj.setMaterial(doc.getElement('moon'));
-          obj.setAnimation(doc.getElement('spin'));
-          obj.setFrameRate(Math.floor(Math.random() * 40));
+
+          obj.setAnimation(doc.getElement('pop'));
+          obj.setLoop(false);
+          obj.addEventListener('animFinished', function() {
+            obj.setAnimation(doc.getElement('spin'));
+            obj.setLoop(true);
+            obj.setFrameRate(Math.floor(Math.random() * 40));
+          });
 
           // TODO: Figure out the width and height of viewport in GLGE units.
           // Until then, these are heuristics....
