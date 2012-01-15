@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head lang="en-us">
+    <title>boxpopper</title>
+    <meta charset="utf-8"/>
+
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html, body {
+        width: 100%;
+        height: 100%;
+        background: #ccc;
+        overflow: hidden;
+      }
+    </style>
+
+  </head>
+  <body>
+
+    <canvas id="canvas"/>
+
+    <script type="text/xml" id="scene-xml">
+      <glge>
+
+        <mesh id="box">
+          <positions>1.000000,0.999999,1.000000,1.000000,1.000000,-1.000000,-1.000000,1.000000,-1.000000,1.000000,0.999999,1.000000,-1.000000,1.000000,-1.000000,-1.000000,1.000000,1.000000,-1.000000,-1.000000,-1.000000,-1.000000,-1.000000,1.000000,-1.000000,1.000000,1.000000,-1.000000,-1.000000,-1.000000,-1.000000,1.000000,1.000000,-1.000000,1.000000,-1.000000,1.000000,-1.000000,-1.000000,0.999999,-1.000001,1.000000,-1.000000,-1.000000,-1.000000,0.999999,-1.000001,1.000000,-1.000000,-1.000000,1.000000,-1.000000,-1.000000,-1.000000,1.000000,1.000000,-1.000000,1.000000,0.999999,1.000000,1.000000,-1.000000,-1.000000,1.000000,0.999999,1.000000,0.999999,-1.000001,1.000000,1.000000,-1.000000,-1.000000,1.000000,0.999999,1.000000,-1.000000,1.000000,1.000000,0.999999,-1.000001,1.000000,-1.000000,1.000000,1.000000,-1.000000,-1.000000,1.000000,0.999999,-1.000001,1.000000,1.000000,1.000000,-1.000000,1.000000,-1.000000,-1.000000,-1.000000,-1.000000,-1.000000,1.000000,1.000000,-1.000000,-1.000000,-1.000000,-1.000000,-1.000000,1.000000,-1.000000</positions>
+          <normals>0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-0.000000,-1.000000,-0.000000,-0.000000,-1.000000,-0.000000,-0.000000,-1.000000,-0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,1.000000,0.000000,-0.000000,1.000000,0.000000,-0.000000,1.000000,0.000000,-0.000000,1.000000,-0.000001,0.000000,1.000000,-0.000001,0.000000,1.000000,-0.000001,0.000000,-0.000000,-0.000000,1.000000,-0.000000,-0.000000,1.000000,-0.000000,-0.000000,1.000000,0.000000,-0.000000,1.000000,0.000000,-0.000000,1.000000,0.000000,-0.000000,1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000,0.000000,-0.000000,-1.000000</normals>
+          <uv1>0.333333,0.498471,0.001020,0.500000,0.000000,0.001529,0.333333,0.498471,0.000000,0.001529,0.332314,0.000000,0.000000,0.998471,0.001020,0.500000,0.333333,0.501529,0.000000,0.998471,0.333333,0.501529,0.332314,1.000000,0.665647,0.500000,0.666667,0.998471,0.333333,0.501529,0.666667,0.998471,0.334353,1.000000,0.333333,0.501529,0.998981,0.000000,1.000000,0.498471,0.666667,0.001529,1.000000,0.498471,0.667686,0.500000,0.666667,0.001529,1.000000,0.501529,0.998981,1.000000,0.667686,0.500000,0.998981,1.000000,0.666667,0.998471,0.667686,0.500000,0.334353,0.500000,0.333333,0.001529,0.665647,0.000000,0.334353,0.500000,0.665647,0.000000,0.666667,0.498471</uv1>
+          <faces>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35</faces>
+        </mesh>
+
+        <camera id="maincamera" loc_z="20" />
+
+        <material id="boxmaterial" color="#900" />
+
+        <animation_vector id="spin" frames="300">
+          <animation_curve channel="RotY">
+            <linear_point x="1" y="0" />
+            <linear_point x="300" y="-6.283" />
+          </animation_curve>
+          <animation_curve channel="RotZ">
+            <linear_point x="1" y="0" />
+            <linear_point x="300" y="-6.283" />
+          </animation_curve>
+        </animation_vector>
+
+        <scene id="mainscene" camera="#maincamera" ambient_color="#fff">
+          <light id="mainlight" loc_y="5" type="L_POINT" />
+        </scene>
+
+      </glge>
+    </script>
+
+    <script src="../glge-compiled.js"></script>
+    <script src="../jquery-1.7.1.min.js"></script>
+    <script>
+
+      // via Paul Irish
+      window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function( callback ){
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      var doc = new GLGE.Document;
+
+      doc.onLoad = function() {
+        var renderer = new GLGE.Renderer(document.getElementById('canvas'));
+        var scene = doc.getElement('mainscene');
+        renderer.setScene(scene);
+
+        // Animation loop
+        (function animloop(){
+          requestAnimFrame(animloop);
+          renderer.render();
+        })();
+
+        // Handle canvas resizing (buggy)
+        var canvas = $('canvas');
+        function resize() {
+          var w = $(window).width(), h = $(window).height();
+          canvas.attr({ width: w, height: h });
+          renderer.clearViewport();
+        }
+
+        $(document).on('ready', resize);
+        $(window).on('resize', resize);
+
+        // Handle clicking
+        canvas.on('click', function(e) {
+          var obj = new GLGE.Object;
+          obj.setMesh(doc.getElement('box'));
+          obj.setMaterial(doc.getElement('boxmaterial'));
+          obj.setAnimation(doc.getElement('spin'));
+
+          var x = (e.clientX / canvas.width()) * 3;
+          var y = (e.clientY / canvas.height()) * 3;
+          obj.setLoc(x, y, 0);
+
+          scene.addChild(obj);
+        });
+
+      }
+
+      // -- load the xml containing the scene data
+      doc.parseScript('scene-xml');
+
+    </script>
+
+  </body>
+</html>
+
