@@ -84,8 +84,6 @@
           </animation_curve>
         </animation_vector>
 
-        <collada id="ship" document="assets/seymourplane_triangulate.dae" />
-
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
           <light id="mainlight" loc_y="5" type="L_POINT" />
           <object id="ground" mesh="#groundmesh" material="#water" scale="30" loc_z=".2" />
@@ -114,7 +112,7 @@
       })();
 
       var assetFinished = (function() {
-        var NUM_ASSETS = 2;
+        var NUM_ASSETS = 3;
         var count = 0;
         return function() {
           if (++count == NUM_ASSETS) init();
@@ -123,6 +121,9 @@
 
       var duck = new GLGE.Collada();
       duck.setDocument('assets/duck.dae', null, assetFinished);
+
+      ship = new GLGE.Collada();
+      ship.setDocument('assets/seymourplane_triangulate.dae', null, assetFinished);
 
       doc = new GLGE.Document();
       doc.onLoad = assetFinished;
@@ -150,7 +151,13 @@
         }
 
         // Game view.
-        var ship = doc.getElement('ship');
+        ship.setLocZ(5);
+        ship.setRotX(Math.PI / 2);
+        ship.setRotY(Math.PI / 2);
+        ship.setScale(.3);
+        ship.setFrameRate(60);
+        scene.addChild(ship);
+
         var ducks = {}
         var game = new Game();
         game.ship.bind('change', function(model) {
