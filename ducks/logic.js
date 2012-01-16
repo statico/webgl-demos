@@ -30,27 +30,41 @@ var Trig = {
 var Ship = Backbone.Model.extend({
 
   RADIUS: 1,
-  SPEED: 0.2,
+  FORWARD_THRUST: 0.2,
+  MAX_TURN_SPEED: 0.1,
 
   defaults: {
     x: -15,
     y: 0,
-    rotation: 0,
+    vx: 0,
+    vy: 0,
+    heading: 0,
     targetX: 0,
     targetY: 0
   },
 
   tick: function() {
-    var attr = this.attributes;
-    var distance = Trig.distance(attr.x, attr.y, attr.targetX, attr.targetY);
-    if (distance <= this.RADIUS) return;
-    var angle = Trig.angle(attr.x, attr.y, attr.targetX, attr.targetY);
-    var vx = Math.cos(angle) * this.SPEED;
-    var vy = Math.sin(angle) * this.SPEED;
+    var old = this.attributes;
+
+    // Calculate the new heading. Don't let the ship turn faster than
+    // TURN_SPEED.
+    var direction = Trig.angle(old.x, old.y, old.targetX, old.targetY);
+    var heading, delta = old.heading - direction;
+    if (Math.abs(delta) > this.MAX_TURN_SPEED) {
+      heading = old.heading + this.MAX_TURN_SPEED * (delta < 0 ? 1 : -1);
+    } else {
+      heading = direction;
+    }
+
+    var vx = Math.cos(heading) * this.FORWARD_THRUST;
+    var vy = Math.sin(heading) * this.FORWARD_THRUST;
+
     this.set({
-      rotation: angle,
-      x: attr.x + vx,
-      y: attr.y + vy
+      heading: heading,
+      vx: vx,
+      vy: vy,
+      x: old.x + vx,
+      y: old.y + vy
     });
   }
 
@@ -130,7 +144,6 @@ var GameController = Backbone.View.extend({
       var distance = Trig.distance(sa.x, sa.y, da.x, da.y);
       if (distance < max) {
         this.ducks.remove(duck);
-        console.log('removed', duck);
       }
     }, this);
 

@@ -73,8 +73,8 @@ function init() {
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);
 
-  var bobAnimation = doc.getElement('bob');
-  var popAnimation = doc.getElement('pop');
+  var bob = doc.getElement('bob');
+  var disappear = doc.getElement('disappear');
 
   var viewport = {
     top: 14,
@@ -117,6 +117,7 @@ function init() {
     var a = model.attributes;
     ship.setLocX(a.x);
     ship.setLocY(a.y);
+    ship.setRotY(Trig.angle(0, 0, a.vx, a.vy) + 1.57);
     target.setLocX(a.targetX);
     target.setLocY(a.targetY);
   });
@@ -127,7 +128,7 @@ function init() {
     var obj = createDuckie();
     obj.setLocX(model.attributes.x);
     obj.setLocY(model.attributes.y);
-    obj.setAnimation(bobAnimation);
+    obj.setAnimation(bob);
     obj.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000);
     scene.addChild(obj);
     ducks[model.cid] = obj; // Backbone generates the cid property automatically.
@@ -136,7 +137,7 @@ function init() {
   // Remove a duck once it's removed from the collection.
   game.ducks.bind('remove', function(model) {
     var obj = ducks[model.cid];
-    obj.setAnimation(popAnimation);
+    obj.setAnimation(disappear);
     obj.setLoop(GLGE.FALSE);
     obj.addEventListener('animFinished', function() {
       scene.removeChild(obj);
