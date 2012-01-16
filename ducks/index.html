@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
   <head lang="en-us">
+
     <title>ducks</title>
     <meta charset="utf-8"/>
 
@@ -23,192 +24,14 @@
 
     <canvas id="canvas"/>
 
-    <script type="text/xml" id="scene-xml">
-      <glge>
-
-        <mesh id="groundmesh">
-          <positions>1,1,0,-1,1,0,-1,-1,0,1,1,0,-1,-1,0,1,-1,0</positions>
-          <normals>-0,0,1,-0,0,1,-0,0,1,0,-0,1,0,-0,1,0,-0,1</normals>;
-          <uv1>0,0,1,0,1,1,0,0,1,1,0,1</uv1>
-          <faces>0,1,2,3,4,5,</faces>
-        </mesh>
-
-        <material id="water" specular="0.2" shininess="50" color="#aaf" emit="0.001">
-
-          <texture id="waterheight" src="assets/waterheight.jpg" />
-          <material_layer texture="#waterheight" mapinput="UV1" frame_rate="25" height="0.07"
-            animation="#flow" mapto="M_HEIGHT" scale_x="2" scale_y="2" />
-
-          <texture id="waternormal" src="assets/waternormal.jpg" />
-          <material_layer texture="#waternormal" mapinput="UV1" mapto="M_NOR"
-            scale="1" scale_y="1" />
-
-          <texture_camera camera="#maincamera" id="watercolor1" clip_axis="POS_ZAXIS"  />
-          <material_layer texture="#watercolor1" mapinput="MAP_VIEW" scale_x="2"
-            mapto="M_COLOR" alpha="0.95" />
-
-          <texture_camera camera="#maincamera" id="watercolor2" clip_axis="NEG_ZAXIS"
-            mirror_axis="ZAXIS" />
-          <material_layer texture="#watercolor2" mapinput="MAP_VIEW"
-            mapto="M_COLOR" alpha="0.3" />
-
-        </material>
-
-        <camera id="maincamera"
-          fov_y="35"
-          rot_x="0.2"
-          loc_z="40" loc_x="0" loc_y="-8"
-          />
-
-        <animation_vector id="flow" frames="1000">
-          <animation_curve channel="OffsetY">
-            <linear_point x="0.0" y="-1" />
-            <linear_point x="1000.0" y="1.0" />
-          </animation_curve>
-        </animation_vector>
-
-        <animation_vector id="bob" frames="100">
-          <animation_curve channel="DRotX">
-            <linear_point x="1" y="0" />
-            <linear_point x="25" y=".4" />
-            <linear_point x="50" y="0" />
-            <linear_point x="75" y=".4" />
-            <linear_point x="100" y="0" />
-          </animation_curve>
-          <animation_curve channel="LocZ">
-            <linear_point x="1" y="-.3" />
-            <linear_point x="25" y="0" />
-            <linear_point x="50" y="-.3" />
-            <linear_point x="75" y="0" />
-            <linear_point x="100" y="-.3" />
-          </animation_curve>
-        </animation_vector>
-
-        <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
-          <light id="mainlight" loc_y="5" type="L_POINT" />
-          <object id="ground" mesh="#groundmesh" material="#water" scale="30" loc_z=".2" />
-        </scene>
-
-      </glge>
-    </script>
-
     <script src="../vendor/glge-compiled.js"></script>
     <script src="../vendor/jquery-1.7.1.min.js"></script>
     <script src="../vendor/underscore-min.js"></script>
     <script src="../vendor/backbone-min.js"></script>
-    <script src="game.js"></script>
-    <script>
 
-      // via Paul Irish
-      window.requestAnimFrame = (function(){
-        return  window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame    ||
-        window.oRequestAnimationFrame      ||
-        window.msRequestAnimationFrame     ||
-        function( callback ){
-          window.setTimeout(callback, 1000 / 60);
-        };
-      })();
-
-      var assetFinished = (function() {
-        var NUM_ASSETS = 4;
-        var count = 0;
-        return function() {
-          if (++count == NUM_ASSETS) init();
-        };
-      })();
-
-      var duck = new GLGE.Collada();
-      duck.setDocument('assets/duck.dae', null, assetFinished);
-
-      target = new GLGE.Collada();
-      target.setDocument('assets/target.dae', null, assetFinished);
-
-      ship = new GLGE.Collada();
-      ship.setDocument('assets/seymourplane_triangulate.dae', null, assetFinished);
-
-      doc = new GLGE.Document();
-      doc.onLoad = assetFinished;
-      doc.parseScript('scene-xml');
-
-      function init() {
-        var renderer = new GLGE.Renderer($('canvas')[0]);
-        scene = doc.getElement('mainscene');
-        renderer.setScene(scene);
-
-        var bob = doc.getElement('bob');
-
-        function createDuckie() {
-          if (!duck.xml) throw new Error("Collada model not loaded");
-          var source = duck.getObjects()[0]; // Ew.
-          var dest = new GLGE.Object();
-          dest.setScale(0.01);
-          dest.setRotX(Math.PI / 2);
-          dest.setRotY(Math.random() * 2 * Math.PI);
-          dest.setMesh(source.getMesh());
-          dest.setMaterial(source.getMaterial());
-          dest.setAnimation(bob);
-          dest.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000)
-          return dest;
-        }
-
-        // Game view.
-        ship.setLocZ(5);
-        ship.setRotX(Math.PI / 2);
-        ship.setRotY(Math.PI / 2);
-        ship.setScale(.3);
-        ship.setFrameRate(60);
-        scene.addChild(ship);
-
-        target.setLocZ(.4);
-        target.setScale(0.001);
-        target.setRotX(Math.PI / 2);
-        target.setRotY(Math.PI / 2);
-        scene.addChild(target);
-
-        var ducks = {}
-        var game = new Game();
-        game.ship.bind('change', function(model) {
-          var a = model.attributes;
-          ship.setLocX(a.x);
-          ship.setLocY(a.y);
-          target.setLocX(a.targetX);
-          target.setLocY(a.targetY);
-        });
-        game.ducks.bind('add', function(model) {
-          var obj = createDuckie();
-          obj.setLocX(model.attributes.x);
-          obj.setLocY(model.attributes.y);
-          scene.addChild(obj);
-          ducks[model.cid] = obj;
-        });
-        game.ducks.bind('remove', function(model) {
-          var obj = ducks[model.cid];
-          scene.removeChild(obj);
-        });
-        game.start();
-
-        // Animation loop
-        (function animloop(){
-          requestAnimFrame(animloop);
-          renderer.render();
-        })();
-
-        // Handle canvas resizing (buggy)
-        var canvas = $('canvas');
-        function resize() {
-          var w = $(window).width(), h = $(window).height();
-          canvas.attr({ width: w, height: h });
-          renderer.clearViewport();
-        }
-        $(document).on('ready', resize);
-        $(window).on('resize', resize);
-        resize();
-
-      }
-
-    </script>
+    <script src="logic.js"></script>
+    <script src="view.js"></script>
+    <!-- See also scene.xml -->
 
   </body>
 </html>

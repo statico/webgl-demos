@@ -1,3 +1,14 @@
+/*!
+ * Models for the Ducks game.
+ *
+ * Requires: Backbone, Underscore.js.
+ *
+ * I'm using Backbone because it's got a simple, useful way to subscribe to
+ * data events. I'm not sure how well it would scale to a full game, though,
+ * with hundreds of events to closures being called every frame.
+ */
+
+/* Handy trig functions. */
 var Trig = {
     deg2rad: function(deg) {
       return deg * Math.PI / 180;

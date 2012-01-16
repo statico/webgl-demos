@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<glge>
+
+  <mesh id="groundmesh">
+    <positions>1,1,0,-1,1,0,-1,-1,0,1,1,0,-1,-1,0,1,-1,0</positions>
+    <normals>-0,0,1,-0,0,1,-0,0,1,0,-0,1,0,-0,1,0,-0,1</normals>;
+    <uv1>0,0,1,0,1,1,0,0,1,1,0,1</uv1>
+    <faces>0,1,2,3,4,5,</faces>
+  </mesh>
+
+  <material id="water" specular="0.2" shininess="50" color="#aaf" emit="0.001">
+
+    <texture id="waterheight" src="assets/waterheight.jpg" />
+    <material_layer texture="#waterheight" mapinput="UV1" frame_rate="25" height="0.07"
+      animation="#flow" mapto="M_HEIGHT" scale_x="2" scale_y="2" />
+
+    <texture id="waternormal" src="assets/waternormal.jpg" />
+    <material_layer texture="#waternormal" mapinput="UV1" mapto="M_NOR"
+      scale="1" scale_y="1" />
+
+    <texture_camera camera="#maincamera" id="watercolor1" clip_axis="POS_ZAXIS"  />
+    <material_layer texture="#watercolor1" mapinput="MAP_VIEW" scale_x="2"
+      mapto="M_COLOR" alpha="0.95" />
+
+    <texture_camera camera="#maincamera" id="watercolor2" clip_axis="NEG_ZAXIS"
+      mirror_axis="ZAXIS" />
+    <material_layer texture="#watercolor2" mapinput="MAP_VIEW"
+      mapto="M_COLOR" alpha="0.3" />
+
+  </material>
+
+  <camera id="maincamera"
+    fov_y="35"
+    rot_x="0.2"
+    loc_z="40" loc_x="0" loc_y="-8"
+    />
+
+  <animation_vector id="flow" frames="1000">
+    <animation_curve channel="OffsetY">
+      <linear_point x="0.0" y="-1" />
+      <linear_point x="1000.0" y="1.0" />
+    </animation_curve>
+  </animation_vector>
+
+  <animation_vector id="bob" frames="100">
+    <animation_curve channel="DRotX">
+      <linear_point x="1" y="0" />
+      <linear_point x="25" y=".4" />
+      <linear_point x="50" y="0" />
+      <linear_point x="75" y=".4" />
+      <linear_point x="100" y="0" />
+    </animation_curve>
+    <animation_curve channel="LocZ">
+      <linear_point x="1" y="-.3" />
+      <linear_point x="25" y="0" />
+      <linear_point x="50" y="-.3" />
+      <linear_point x="75" y="0" />
+      <linear_point x="100" y="-.3" />
+    </animation_curve>
+  </animation_vector>
+
+  <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
+    <light id="mainlight" loc_y="5" type="L_POINT" />
+    <object id="ground" mesh="#groundmesh" material="#water" scale="30" loc_z=".2" />
+  </scene>
+
+</glge>
