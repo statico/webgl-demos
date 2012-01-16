@@ -76,14 +76,26 @@ var Game = Backbone.View.extend({
   },
 
   start: function() {
+    var _this = this;
+
+    var x, y;
+    var MIN_DISTANCE = Duck.prototype.RADIUS * 3;
+    var isTooClose = function(other) {
+      var o = other.attributes;
+      var distance = Trig.distance(x, y, o.x, o.y);
+      return distance < MIN_DISTANCE;
+    };
     _.each(_.range(this.NUM_DUCKS), function() {
-      // TODO - don't place ducks near each other
-      var x = Math.random() * (this.RIGHT + -this.LEFT) + this.LEFT;
-      var y = Math.random() * (this.TOP + -this.BOTTOM) + this.BOTTOM;
+      var tries = 0;
+      while (tries < 30) {
+        x = Math.random() * (this.RIGHT + -this.LEFT) + this.LEFT;
+        y = Math.random() * (this.TOP + -this.BOTTOM) + this.BOTTOM;
+        if (!this.ducks.any(isTooClose)) break;
+        tries++;
+      }
       this.ducks.add({ x: x, y: y });
     }, this);
 
-    var _this = this;
     clearInterval(this.interval);
     this.interval = setInterval(function() {
       _this.tick();
