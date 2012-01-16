@@ -37,11 +37,11 @@
 
           <texture id="waterheight" src="assets/waterheight.jpg" />
           <material_layer texture="#waterheight" mapinput="UV1" frame_rate="25" height="0.07"
-            animation="#flow" mapto="M_HEIGHT" scale_x="0.8" scale_y="0.8" />
+            animation="#flow" mapto="M_HEIGHT" scale_x="2" scale_y="2" />
 
           <texture id="waternormal" src="assets/waternormal.jpg" />
           <material_layer texture="#waternormal" mapinput="UV1" mapto="M_NOR"
-            scale_x="0.5" scale_y="0.5" />
+            scale="1" scale_y="1" />
 
           <texture_camera camera="#maincamera" id="watercolor1" clip_axis="POS_ZAXIS"  />
           <material_layer texture="#watercolor1" mapinput="MAP_VIEW" scale_x="2"
@@ -79,7 +79,7 @@
 
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
           <light id="mainlight" loc_y="5" type="L_POINT" />
-          <object id="ground" mesh="#groundmesh" material="#water" scale="20" loc_z=".2" />
+          <object id="ground" mesh="#groundmesh" material="#water" scale="30" loc_z=".2" />
           <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.02" />
           <collada document="assets/duck.dae" loc_x="10" loc_y="-5" rot_x="1.57" scale="0.02" />
           <collada document="assets/duck.dae" loc_x="-10" loc_y="5" rot_x="1.57" scale="0.02" />
