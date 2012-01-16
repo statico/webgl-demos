@@ -26,11 +26,46 @@
     <script type="text/xml" id="scene-xml">
       <glge>
 
+        <mesh id="groundmesh">
+          <positions>1.000,1.000,0.000,-1.000,1.000,0.000,-1.000,-1.000,0.000,1.000,1.000,0.000,-1.000,-1.000,0.000,1.000,-1.000,0.000</positions>
+          <normals>-0.000,0.000,1.000,-0.000,0.000,1.000,-0.000,0.000,1.000,0.000,-0.000,1.000,0.000,-0.000,1.000,0.000,-0.000,1.000</normals>;
+          <uv1>0.000,0.000,1.000,0.000,1.000,1.000,0.000,0.000,1.000,1.000,0.000,1.000</uv1>
+          <faces>0,1,2,3,4,5,</faces>
+        </mesh>
+
+        <material id="water" specular="0.2" shininess="50" color="#aaf" emit="0.001">
+
+          <texture id="waterheight" src="assets/waterheight.jpg" />
+          <material_layer texture="#waterheight" mapinput="UV1" frame_rate="25" height="0.07"
+            animation="#flow" mapto="M_HEIGHT" scale_x="0.8" scale_y="0.8" />
+
+          <texture id="waternormal" src="assets/waternormal.jpg" />
+          <material_layer texture="#waternormal" mapinput="UV1" mapto="M_NOR"
+            scale_x="0.5" scale_y="0.5" />
+
+          <texture_camera camera="#maincamera" id="watercolor1" clip_axis="POS_ZAXIS"  />
+          <material_layer texture="#watercolor1" mapinput="MAP_VIEW" scale_x="2"
+            mapto="M_COLOR" alpha="0.95" />
+
+          <texture_camera camera="#maincamera" id="watercolor2" clip_axis="NEG_ZAXIS"
+            mirror_axis="ZAXIS" />
+          <material_layer texture="#watercolor2" mapinput="MAP_VIEW"
+            mapto="M_COLOR" alpha="0.3" />
+
+        </material>
+
         <camera id="maincamera"
           fov_y="35"
           rot_x="0.2"
           loc_z="40" loc_x="0" loc_y="-8"
           />
+
+        <animation_vector id="flow" frames="1000">
+          <animation_curve channel="OffsetY">
+            <linear_point x="0.0" y="-1" />
+            <linear_point x="1000.0" y="1.0" />
+          </animation_curve>
+        </animation_vector>
 
         <animation_vector id="bob" frames="200">
           <animation_curve channel="DRotX">
@@ -42,8 +77,9 @@
           </animation_curve>
         </animation_vector>
 
-        <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#000">
+        <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
           <light id="mainlight" loc_y="5" type="L_POINT" />
+          <object id="ground" mesh="#groundmesh" material="#water" scale="20" />
           <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.02" />
           <collada document="assets/duck.dae" loc_x="10" loc_y="-5" rot_x="1.57" scale="0.02" />
           <collada document="assets/duck.dae" loc_x="-10" loc_y="5" rot_x="1.57" scale="0.02" />
