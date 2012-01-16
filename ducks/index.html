@@ -112,7 +112,7 @@
       })();
 
       var assetFinished = (function() {
-        var NUM_ASSETS = 3;
+        var NUM_ASSETS = 4;
         var count = 0;
         return function() {
           if (++count == NUM_ASSETS) init();
@@ -121,6 +121,9 @@
 
       var duck = new GLGE.Collada();
       duck.setDocument('assets/duck.dae', null, assetFinished);
+
+      target = new GLGE.Collada();
+      target.setDocument('assets/target.dae', null, assetFinished);
 
       ship = new GLGE.Collada();
       ship.setDocument('assets/seymourplane_triangulate.dae', null, assetFinished);
@@ -158,11 +161,20 @@
         ship.setFrameRate(60);
         scene.addChild(ship);
 
+        target.setLocZ(.4);
+        target.setScale(0.001);
+        target.setRotX(Math.PI / 2);
+        target.setRotY(Math.PI / 2);
+        scene.addChild(target);
+
         var ducks = {}
         var game = new Game();
         game.ship.bind('change', function(model) {
-          ship.setLocX(model.attributes.x);
-          ship.setLocY(model.attributes.y);
+          var a = model.attributes;
+          ship.setLocX(a.x);
+          ship.setLocY(a.y);
+          target.setLocX(a.targetX);
+          target.setLocY(a.targetY);
         });
         game.ducks.bind('add', function(model) {
           var obj = createDuckie();
