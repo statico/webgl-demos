@@ -67,23 +67,25 @@
           </animation_curve>
         </animation_vector>
 
-        <animation_vector id="bob" frames="200">
+        <animation_vector id="bob" frames="100">
           <animation_curve channel="DRotX">
             <linear_point x="1" y="0" />
-            <linear_point x="50" y=".3" />
+            <linear_point x="25" y=".5" />
+            <linear_point x="50" y="0" />
+            <linear_point x="75" y=".5" />
             <linear_point x="100" y="0" />
-            <linear_point x="150" y=".3" />
-            <linear_point x="200" y="0" />
           </animation_curve>
         </animation_vector>
 
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
           <light id="mainlight" loc_y="5" type="L_POINT" />
           <object id="ground" mesh="#groundmesh" material="#water" scale="30" loc_z=".2" />
-          <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.02" />
-          <collada document="assets/duck.dae" loc_x="10" loc_y="-5" rot_x="1.57" scale="0.02" />
-          <collada document="assets/duck.dae" loc_x="-10" loc_y="5" rot_x="1.57" scale="0.02" />
-          <collada document="assets/duck.dae" loc_x="10" loc_y="5" rot_x="1.57" scale="0.02" />
+          <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.01" />
+          <collada animation="#bob" document="assets/duck.dae" loc_x="10" loc_y="-5" rot_x="1.57" scale="0.01" />
+          <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="5" rot_x="1.57" scale="0.01" />
+          <collada animation="#bob" document="assets/duck.dae" loc_x="10" loc_y="5" rot_x="1.57" scale="0.01" />
+          <collada animation="#bob" document="assets/seymourplane_triangulate.dae" rot_x="1.57"
+            rot_y="1.57" loc_x="-15" loc_y="0" loc_z="2" scale=".2" />
         </scene>
 
       </glge>
