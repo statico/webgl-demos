@@ -77,15 +77,15 @@
           </animation_curve>
         </animation_vector>
 
+        <collada id="duck" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57"
+          scale="0.01" />
+
+        <collada id="plane" document="assets/seymourplane_triangulate.dae" rot_x="1.57"
+          rot_y="1.57" loc_x="-15" loc_y="0" loc_z="2" scale=".2" />
+
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
           <light id="mainlight" loc_y="5" type="L_POINT" />
           <object id="ground" mesh="#groundmesh" material="#water" scale="30" loc_z=".2" />
-          <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.01" />
-          <collada animation="#bob" document="assets/duck.dae" loc_x="10" loc_y="-5" rot_x="1.57" scale="0.01" />
-          <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="5" rot_x="1.57" scale="0.01" />
-          <collada animation="#bob" document="assets/duck.dae" loc_x="10" loc_y="5" rot_x="1.57" scale="0.01" />
-          <collada animation="#bob" document="assets/seymourplane_triangulate.dae" rot_x="1.57"
-            rot_y="1.57" loc_x="-15" loc_y="0" loc_z="2" scale=".2" />
         </scene>
 
       </glge>
@@ -93,6 +93,9 @@
 
     <script src="../vendor/glge-compiled.js"></script>
     <script src="../vendor/jquery-1.7.1.min.js"></script>
+    <script src="../vendor/underscore-min.js"></script>
+    <script src="../vendor/backbone-min.js"></script>
+    <script src="game.js"></script>
     <script>
 
       // via Paul Irish
@@ -107,14 +110,33 @@
         };
       })();
 
-      var doc = new GLGE.Document;
+      var doc = new GLGE.Document();
       doc.onLoad = function() {
 
-        // Not using `var` keyword so I can play with these variables in the console.
-        renderer = new GLGE.Renderer($('canvas')[0]);
-        scene = doc.getElement('mainscene');
+        var renderer = new GLGE.Renderer($('canvas')[0]);
+        var scene = doc.getElement('mainscene');
         renderer.setScene(scene);
-        camera = scene.getCamera();
+
+        // Game view.
+        var plane = doc.getElement('plane');
+        var ducks = {}
+        var game = new Game();
+        game.plane.bind('change', function(model) {
+          plane.setLocX(model.attributes.x);
+          plane.setLocY(model.attributes.y);
+        });
+        game.ducks.bind('add', function(model) {
+          var obj = doc.getElement('duck');
+          obj.setLocX(model.attributes.x);
+          obj.setLocY(model.attributes.y);
+          scene.addChild(obj);
+          ducks[model.cid] = obj;
+        });
+        game.ducks.bind('remove', function(model) {
+          var obj = ducks[model.cid];
+          scene.removeChild(obj);
+        });
+        game.start();
 
         // Animation loop
         (function animloop(){
