@@ -27,16 +27,17 @@
       <glge>
 
         <camera id="maincamera"
-          fov_y="90"
-          loc_z="20" loc_x="0" loc_y="0"
+          fov_y="35"
+          rot_x="0.2"
+          loc_z="40" loc_x="0" loc_y="-8"
           />
 
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#000">
           <light id="mainlight" loc_y="5" type="L_POINT" />
-          <collada document="assets/duck.dae" loc_x="-10" loc_y="-5" scale="0.05" />
-          <collada document="assets/duck.dae" loc_x="10" loc_y="-5" scale="0.05" />
-          <collada document="assets/duck.dae" loc_x="-10" loc_y="5" scale="0.05" />
-          <collada document="assets/duck.dae" loc_x="10" loc_y="5" scale="0.05" />
+          <collada document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.02" />
+          <collada document="assets/duck.dae" loc_x="10" loc_y="-5" rot_x="1.57" scale="0.02" />
+          <collada document="assets/duck.dae" loc_x="-10" loc_y="5" rot_x="1.57" scale="0.02" />
+          <collada document="assets/duck.dae" loc_x="10" loc_y="5" rot_x="1.57" scale="0.02" />
         </scene>
 
       </glge>
@@ -61,9 +62,11 @@
       var doc = new GLGE.Document;
       doc.onLoad = function() {
 
-        var renderer = new GLGE.Renderer($('canvas')[0]);
-        var scene = doc.getElement('mainscene');
+        // Not using `var` keyword so I can play with these variables in the console.
+        renderer = new GLGE.Renderer($('canvas')[0]);
+        scene = doc.getElement('mainscene');
         renderer.setScene(scene);
+        camera = scene.getCamera();
 
         // Animation loop
         (function animloop(){
