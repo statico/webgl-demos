@@ -16,7 +16,7 @@ var Trig = {
     }
 };
 
-var Plane = Backbone.Model.extend({
+var Ship = Backbone.Model.extend({
 
   RADIUS: 1,
   SPEED: 0.1,
@@ -71,7 +71,7 @@ var Game = Backbone.View.extend({
   BOTTOM: -5,
 
   initialize: function() {
-    this.plane = new Plane();
+    this.ship = new Ship();
     this.ducks = new DuckCollection();
   },
 
@@ -91,17 +91,17 @@ var Game = Backbone.View.extend({
   },
 
   setTarget: function(x, y) {
-    this.plane.set({
+    this.ship.set({
       targetX: x,
       targetY: y
     });
   },
 
   tick: function() {
-    this.plane.tick();
+    this.ship.tick();
 
-    var pattr = this.plane.attributes;
-    var max = Plane.RADIUS + Duck.RADIUS;
+    var pattr = this.ship.attributes;
+    var max = Ship.RADIUS + Duck.RADIUS;
     this.ducks.each(function(duck) {
       var dattr = duck.attributes;
       var distance = Trig.distance(pattr.x, pattr.y, dattr.x, dattr.y);

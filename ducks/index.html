@@ -146,17 +146,16 @@
           dest.setMaterial(source.getMaterial());
           dest.setAnimation(bob);
           dest.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000)
-          console.log(bob.getFrames());
           return dest;
         }
 
         // Game view.
-        var plane = doc.getElement('plane');
+        var ship = doc.getElement('ship');
         var ducks = {}
         var game = new Game();
-        game.plane.bind('change', function(model) {
-          plane.setLocX(model.attributes.x);
-          plane.setLocY(model.attributes.y);
+        game.ship.bind('change', function(model) {
+          ship.setLocX(model.attributes.x);
+          ship.setLocY(model.attributes.y);
         });
         game.ducks.bind('add', function(model) {
           var obj = createDuckie();
