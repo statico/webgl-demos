@@ -76,8 +76,8 @@ var Game = Backbone.View.extend({
 
   start: function() {
     _.each(_.range(8), function() {
-      var x = Math.random() * (Game.RIGHT + -Game.LEFT) + Game.LEFT;
-      var y = Math.random() * (Game.TOP + -Game.BOTTOM) + Game.BOTTOM;
+      var x = Math.random() * (this.RIGHT + -this.LEFT) + this.LEFT;
+      var y = Math.random() * (this.TOP + -this.BOTTOM) + this.BOTTOM;
       this.ducks.add({ x: x, y: y });
     }, this);
 

@@ -77,11 +77,7 @@
           </animation_curve>
         </animation_vector>
 
-        <collada id="duck" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57"
-          scale="0.01" />
-
-        <collada id="plane" document="assets/seymourplane_triangulate.dae" rot_x="1.57"
-          rot_y="1.57" loc_x="-15" loc_y="0" loc_z="2" scale=".2" />
+        <collada id="plane" document="assets/seymourplane_triangulate.dae" />
 
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
           <light id="mainlight" loc_y="5" type="L_POINT" />
@@ -110,12 +106,37 @@
         };
       })();
 
-      var doc = new GLGE.Document();
-      doc.onLoad = function() {
+      var assetFinished = (function() {
+        var NUM_ASSETS = 2;
+        var count = 0;
+        return function() {
+          if (++count == NUM_ASSETS) init();
+        };
+      })();
 
+      var duck = new GLGE.Collada();
+      duck.setDocument('assets/duck.dae', null, assetFinished);
+
+      doc = new GLGE.Document();
+      doc.onLoad = assetFinished;
+      doc.parseScript('scene-xml');
+
+      function init() {
         var renderer = new GLGE.Renderer($('canvas')[0]);
-        var scene = doc.getElement('mainscene');
+        scene = doc.getElement('mainscene');
         renderer.setScene(scene);
+
+        function createDuckie() {
+          if (!duck.xml) throw new Error("Collada model not loaded");
+          var source = duck.getObjects()[0]; // Ew.
+          var dest = new GLGE.Object();
+          dest.setScale(0.01);
+          dest.setRotX(Math.PI / 2);
+          dest.setRotY(Math.random() * 2 * Math.PI);
+          dest.setMesh(source.getMesh());
+          dest.setMaterial(source.getMaterial());
+          return dest;
+        }
 
         // Game view.
         var plane = doc.getElement('plane');
@@ -126,9 +147,10 @@
           plane.setLocY(model.attributes.y);
         });
         game.ducks.bind('add', function(model) {
-          var obj = doc.getElement('duck');
+          var obj = createDuckie();
           obj.setLocX(model.attributes.x);
           obj.setLocY(model.attributes.y);
+          console.log('new duck', obj.getLocX(), obj.getLocY());
           scene.addChild(obj);
           ducks[model.cid] = obj;
         });
@@ -155,7 +177,6 @@
         $(window).on('resize', resize);
 
       }
-      doc.parseScript('scene-xml');
 
     </script>
 
