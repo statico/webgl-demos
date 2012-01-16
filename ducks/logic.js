@@ -123,13 +123,14 @@ var GameController = Backbone.View.extend({
   tick: function() {
     this.ship.tick();
 
-    var pattr = this.ship.attributes;
-    var max = Ship.RADIUS + Duck.RADIUS;
+    var sa = this.ship.attributes;
+    var max = Ship.prototype.RADIUS + Duck.prototype.RADIUS;
     this.ducks.each(function(duck) {
-      var dattr = duck.attributes;
-      var distance = Trig.distance(pattr.x, pattr.y, dattr.x, dattr.y);
+      var da = duck.attributes;
+      var distance = Trig.distance(sa.x, sa.y, da.x, da.y);
       if (distance < max) {
-        ducks.remove(duck);
+        this.ducks.remove(duck);
+        console.log('removed', duck);
       }
     }, this);
 

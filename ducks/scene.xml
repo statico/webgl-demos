@@ -59,6 +59,15 @@
     </animation_curve>
   </animation_vector>
 
+  <animation_vector id="pop" frames="10">
+    <animation_curve channel="Scale">
+      <!-- Argh! These have to match up with the duck scale until I figure out why. -->
+      <linear_point x="0" y="0.01" />
+      <linear_point x="3" y="0.013" />
+      <linear_point x="10" y="0" />
+    </animation_curve>
+  </animation_vector>
+
   <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#22738a">
     <light id="mainlight" loc_y="5" type="L_POINT" />
     <object id="ground" mesh="#groundmesh" material="#water" scale="30" loc_z=".2" />
