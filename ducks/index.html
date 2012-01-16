@@ -70,9 +70,9 @@
         <animation_vector id="bob" frames="100">
           <animation_curve channel="DRotX">
             <linear_point x="1" y="0" />
-            <linear_point x="25" y=".5" />
+            <linear_point x="25" y=".4" />
             <linear_point x="50" y="0" />
-            <linear_point x="75" y=".5" />
+            <linear_point x="75" y=".4" />
             <linear_point x="100" y="0" />
           </animation_curve>
         </animation_vector>
@@ -126,6 +126,8 @@
         scene = doc.getElement('mainscene');
         renderer.setScene(scene);
 
+        var bob = doc.getElement('bob');
+
         function createDuckie() {
           if (!duck.xml) throw new Error("Collada model not loaded");
           var source = duck.getObjects()[0]; // Ew.
@@ -135,6 +137,9 @@
           dest.setRotY(Math.random() * 2 * Math.PI);
           dest.setMesh(source.getMesh());
           dest.setMaterial(source.getMaterial());
+          dest.setAnimation(bob);
+          dest.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000)
+          console.log(bob.getFrames());
           return dest;
         }
 
@@ -150,7 +155,6 @@
           var obj = createDuckie();
           obj.setLocX(model.attributes.x);
           obj.setLocY(model.attributes.y);
-          console.log('new duck', obj.getLocX(), obj.getLocY());
           scene.addChild(obj);
           ducks[model.cid] = obj;
         });
@@ -175,6 +179,7 @@
         }
         $(document).on('ready', resize);
         $(window).on('resize', resize);
+        resize();
 
       }
 

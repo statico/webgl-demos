@@ -63,6 +63,7 @@ var DuckCollection = Backbone.Collection.extend({
 var Game = Backbone.View.extend({
 
   FRAME_RATE: 30,
+  NUM_DUCKS: 12,
 
   LEFT: -15,
   RIGHT: 10,
@@ -75,7 +76,8 @@ var Game = Backbone.View.extend({
   },
 
   start: function() {
-    _.each(_.range(8), function() {
+    _.each(_.range(this.NUM_DUCKS), function() {
+      // TODO - don't place ducks near each other
       var x = Math.random() * (this.RIGHT + -this.LEFT) + this.LEFT;
       var y = Math.random() * (this.TOP + -this.BOTTOM) + this.BOTTOM;
       this.ducks.add({ x: x, y: y });
