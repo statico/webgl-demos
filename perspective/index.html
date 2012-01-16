@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head lang="en-us">
-    <title>moons</title>
+    <title>perspective</title>
     <meta charset="utf-8"/>
 
     <link href='http://fonts.googleapis.com/css?family=Francois+One' rel='stylesheet' type='text/css'>
@@ -11,9 +11,8 @@
         padding: 0;
         cursor: pointer;
       }
-      html, body {
-        width: 100%;
-        height: 100%;
+      body {
+        padding: 2% 5%;
         background: #ccc;
         text-align: center;
         font-family: 'Francois One', sans-serif;
@@ -49,6 +48,8 @@
       var doc = new GLGE.Document;
       doc.onLoad = function() {
 
+        // For kicks I'm going to create the scene via JavaScript instead of XML.
+
         var light, scene, camera, renderer, red, blue, obj;
 
         light = new GLGE.Light;
@@ -73,6 +74,24 @@
         obj.setMesh(doc.getElement('cube'));
         obj.setMaterial(red);
         scene.addChild(obj);
+
+        obj = new GLGE.Object;
+        obj.setMesh(doc.getElement('teapot'));
+        obj.setMaterial(blue);
+        obj.setLocZ(5);
+        scene.addChild(obj);
+
+        $(window).on('keypress', function(e) {
+          var key = String.fromCharCode(e.charCode).toUpperCase();
+          var lx, ly, lz, fx, fy, fz;
+          switch (key) {
+          }
+        });
+
+        camera = new GLGE.Camera;
+        camera.setLocZ(40);
+        scene.setCamera(camera);
+        console.log(x = camera.getViewMatrix());
 
         // Animation loop
         (function animloop(){
