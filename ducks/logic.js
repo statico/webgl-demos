@@ -71,7 +71,7 @@ var DuckCollection = Backbone.Collection.extend({
   model: Duck
 });
 
-var Game = Backbone.View.extend({
+var GameController = Backbone.View.extend({
 
   FRAME_RATE: 30,
   NUM_DUCKS: 12,

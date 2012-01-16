@@ -74,7 +74,7 @@ function init() {
 
   var bob = doc.getElement('bob');
 
-  // Game view.
+  // Initialize the player's ship.
   ship.setLocZ(5);
   ship.setRotX(Math.PI / 2);
   ship.setRotY(Math.PI / 2);
@@ -82,16 +82,19 @@ function init() {
   ship.setFrameRate(60);
   scene.addChild(ship);
 
+  // Initialize the aiming target.
   target.setLocZ(0.4);
   target.setScale(0.001);
   target.setRotX(Math.PI / 2);
   target.setRotY(Math.PI / 2);
   scene.addChild(target);
 
-  // Backbone Model bindings.
+  // Create the Backbone model and controller.
   var ducks = {};
-  var game = new Game();
+  var game = new GameController();
 
+  // When the ship or target move, update the GLGE objects. Currently the game
+  // and OpenGL are using the same units so no translation needs to be done.
   game.ship.bind('change', function(model) {
     var a = model.attributes;
     ship.setLocX(a.x);
@@ -100,6 +103,8 @@ function init() {
     target.setLocY(a.targetY);
   });
 
+  // When a duck is added, create it and add it to the scene. Keep track of it
+  // in the `ducks` map so we can remove it later.
   game.ducks.bind('add', function(model) {
     var obj = createDuckie();
     obj.setLocX(model.attributes.x);
@@ -107,9 +112,10 @@ function init() {
     obj.setAnimation(bob);
     obj.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000);
     scene.addChild(obj);
-    ducks[model.cid] = obj;
+    ducks[model.cid] = obj; // Backbone generates the cid property automatically.
   });
 
+  // Remove a duck once it's removed from the collection.
   game.ducks.bind('remove', function(model) {
     var obj = ducks[model.cid];
     scene.removeChild(obj);

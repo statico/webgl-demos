@@ -19,7 +19,7 @@
       scale="1" scale_y="1" />
 
     <texture_camera camera="#maincamera" id="watercolor1" clip_axis="POS_ZAXIS"  />
-    <material_layer texture="#watercolor1" mapinput="MAP_VIEW" scale_x="2"
+    <material_layer texture="#watercolor1" mapinput="MAP_VIEW" scale_x="2" d_rot_y="1.57"
       mapto="M_COLOR" alpha="0.95" />
 
     <texture_camera camera="#maincamera" id="watercolor2" clip_axis="NEG_ZAXIS"
