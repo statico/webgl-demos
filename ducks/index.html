@@ -32,9 +32,19 @@
           loc_z="40" loc_x="0" loc_y="-8"
           />
 
+        <animation_vector id="bob" frames="200">
+          <animation_curve channel="DRotX">
+            <linear_point x="1" y="0" />
+            <linear_point x="50" y=".3" />
+            <linear_point x="100" y="0" />
+            <linear_point x="150" y=".3" />
+            <linear_point x="200" y="0" />
+          </animation_curve>
+        </animation_vector>
+
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#000">
           <light id="mainlight" loc_y="5" type="L_POINT" />
-          <collada document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.02" />
+          <collada animation="#bob" document="assets/duck.dae" loc_x="-10" loc_y="-5" rot_x="1.57" scale="0.02" />
           <collada document="assets/duck.dae" loc_x="10" loc_y="-5" rot_x="1.57" scale="0.02" />
           <collada document="assets/duck.dae" loc_x="-10" loc_y="5" rot_x="1.57" scale="0.02" />
           <collada document="assets/duck.dae" loc_x="10" loc_y="5" rot_x="1.57" scale="0.02" />
