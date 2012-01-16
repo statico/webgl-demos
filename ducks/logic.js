@@ -30,7 +30,7 @@ var Trig = {
 var Ship = Backbone.Model.extend({
 
   RADIUS: 1,
-  SPEED: 0.13,
+  SPEED: 0.2,
 
   defaults: {
     x: -15,

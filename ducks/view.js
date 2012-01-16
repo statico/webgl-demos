@@ -68,11 +68,19 @@ function createDuckie() {
 // ====
 
 function init() {
-  var renderer = new GLGE.Renderer($('canvas')[0]);
+  var canvas = $('canvas');
+  var renderer = new GLGE.Renderer(canvas[0]);
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);
 
   var bob = doc.getElement('bob');
+
+  var viewport = {
+    top: 14,
+    bottom: -14,
+    left: -27,
+    right: 27
+  };
 
   // Initialize the player's ship.
   ship.setLocZ(5);
@@ -92,6 +100,15 @@ function init() {
   // Create the Backbone model and controller.
   var ducks = {};
   var game = new GameController();
+
+  // Update the model during any mouse movements.
+  canvas.on('mousemove', function(e) {
+    var mx = e.offsetX, my = e.offsetY;
+    var cw = canvas.width(), ch = canvas.height();
+    var vx = (mx / cw) * (viewport.right + -viewport.left) + viewport.left;
+    var vy = (my / ch) * (viewport.top + -viewport.bottom) + viewport.bottom;
+    game.ship.set({ targetX: vx, targetY: -vy });
+  });
 
   // When the ship or target move, update the GLGE objects. Currently the game
   // and OpenGL are using the same units so no translation needs to be done.
@@ -122,7 +139,6 @@ function init() {
   });
 
   // Handle canvas resizing (buggy)
-  var canvas = $('canvas');
   function resize() {
     var w = $(window).width(), h = $(window).height();
     canvas.attr({ width: w, height: h });
