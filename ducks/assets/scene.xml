@@ -70,8 +70,8 @@
   <!-- A camera that's almost top-down but gives some perspective. -->
   <camera id="maincamera"
     fov_y="40"
-    rot_x="0.2"
-    loc_z="40" loc_x="0" loc_y="-8"
+    rot_x="0.4"
+    loc_z="30" loc_x="0" loc_y="-12"
     />
 
   <!-- The initial scene with water. Can be creatd here or in JavaScript. -->

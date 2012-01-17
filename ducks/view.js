@@ -130,10 +130,10 @@ function init() {
 
   // TODO: Update this.
   var viewport = {
-    top: 14,
-    bottom: -14,
-    left: -27,
-    right: 27
+    top: 15,
+    bottom: -15,
+    left: -26,
+    right: 26
   };
 
   // Initialize the player's ship.
