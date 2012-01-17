@@ -118,10 +118,10 @@ function init() {
     var a = model.attributes;
     ship.setLocX(a.x);
     ship.setLocY(a.y);
-    ship.setRotY(Trig.angle(0, 0, a.vx, a.vy) + 1.57);
+    ship.setRotY(Trig.deg2rad(a.dir) + 1.57);
     target.setLocX(a.targetX);
     target.setLocY(a.targetY);
-    debug.text(Math.round(a.dir) + ', ' + Math.round(a.delta));
+    debug.text(Math.round(a.dir) + ', ' + Math.round(a.delta) + ', ' + a.speed);
   });
 
   // When a duck is added, create it and add it to the scene. Keep track of it

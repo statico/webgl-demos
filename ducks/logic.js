@@ -30,7 +30,9 @@ var Trig = {
 var Ship = Backbone.Model.extend({
 
   RADIUS: 1,
-  FORWARD_THRUST: 0.3,
+  MIN_SPEED: 0.3,
+  MAX_SPEED: 0.4,
+  ACCELERATION: 0.005,
   MAX_TURN_SPEED: 3,
 
   defaults: {
@@ -38,6 +40,7 @@ var Ship = Backbone.Model.extend({
     y: 0,
     vx: 0,
     vy: 0,
+    speed: 0,
     dir: 0,
     targetX: 0,
     targetY: 0
@@ -56,18 +59,25 @@ var Ship = Backbone.Model.extend({
     var dir = old.dir;
     var target = Trig.angleDeg(old.x, old.y, old.targetX, old.targetY);
     var delta = (dir - target) % 360;
+    var change;
     if (Math.abs(delta) > M) {
-      var change = (delta < 0) ? 1 : -1;
+      change = (delta < 0) ? 1 : -1;
       if (Math.abs(delta) > 180) change = 0 - change;
       dir += change * M;
     } else {
       dir = target;
     }
 
-    var vx = Math.cos(Trig.deg2rad(dir)) * this.FORWARD_THRUST;
-    var vy = Math.sin(Trig.deg2rad(dir)) * this.FORWARD_THRUST;
+    // Slow down for turns but speed up for straightaways. Again, there's
+    // probably a smarter way to do this using fake physics forces, but this
+    // "feels" good.
+    change = this.ACCELERATION * (dir === target ? 1 : -1);
+    var speed = Math.max(Math.min(old.speed + change, this.MAX_SPEED), this.MIN_SPEED);
+    var vx = Math.cos(Trig.deg2rad(dir)) * speed;
+    var vy = Math.sin(Trig.deg2rad(dir)) * speed;
 
     this.set({
+      speed: speed,
       delta: delta,
       dir: dir % 360,
       vx: vx,
