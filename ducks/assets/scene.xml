@@ -40,20 +40,20 @@
   </animation_vector>
 
   <!-- Animation which makes an object rock back and forth in the water. -->
-  <animation_vector id="bob" frames="100">
+  <animation_vector id="bob" frames="120">
     <animation_curve channel="DRotX">
       <linear_point x="1" y="0" />
-      <linear_point x="25" y=".4" />
-      <linear_point x="50" y="0" />
-      <linear_point x="75" y=".4" />
-      <linear_point x="100" y="0" />
+      <linear_point x="30" y=".4" />
+      <linear_point x="60" y="0" />
+      <linear_point x="90" y=".4" />
+      <linear_point x="120" y="0" />
     </animation_curve>
     <animation_curve channel="LocZ">
       <linear_point x="1" y="-.3" />
-      <linear_point x="25" y="0" />
-      <linear_point x="50" y="-.3" />
-      <linear_point x="75" y="0" />
-      <linear_point x="100" y="-.3" />
+      <linear_point x="30" y="0" />
+      <linear_point x="60" y="-.3" />
+      <linear_point x="90" y="0" />
+      <linear_point x="120" y="-.3" />
     </animation_curve>
   </animation_vector>
 
@@ -69,7 +69,7 @@
 
   <!-- A camera that's almost top-down but gives some perspective. -->
   <camera id="maincamera"
-    fov_y="35"
+    fov_y="40"
     rot_x="0.2"
     loc_z="40" loc_x="0" loc_y="-8"
     />
