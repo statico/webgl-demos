@@ -4,17 +4,39 @@
 
     <title>ducks</title>
     <meta charset="utf-8"/>
+    <link href='http://fonts.googleapis.com/css?family=Bubblegum+Sans' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" type="text/css" href="style.css"/>
 
   </head>
   <body>
 
     <canvas id="canvas" width="1024" height="768"></canvas>
+
     <div id="preloader">
       <span class="outer">
         <span class="inner">&nbsp;</span>
       </span>
     </div>
+
+    <div id="menu" class="modal">
+      <div class="inner">
+        <h1>Ducks!</h1>
+        <h2>
+          Guide the plane with the mouse and gather the duckies
+          as fast as you can!
+        </h2>
+        <button>Play!</button>
+        <p>
+          An HTML5 game by <a href="http://langworth.com">Ian Langworth</a>.
+          <br/>
+          Music: "Canopy" by <a href="http://www.nosoapradio.us/">NoSoapRadio</a>.
+          <br/>
+          Built using <a href="http://www.glge.org/">GLGE</a>
+          and <a href="https://github.com/statico/webgl-demos/tree/ducks">lots more...</a>
+        </p>
+      </div>
+    </div>
+
     <div id="debug"></div>
 
     <script src="../vendor/glge-compiled.js"></script>

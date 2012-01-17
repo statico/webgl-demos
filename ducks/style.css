@@ -41,6 +41,58 @@ html, body {
   background: #fff;
 }
 
+/* http://stackoverflow.com/questions/1776915/ */
+.modal {
+  z-index: 100;
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  display: none;
+}
+.modal .inner {
+  position: relative;
+  left: -50%;
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  background: rgba(0, 0, 0, .75);
+  color: #ff0;
+  border-radius: 15px;
+}
+.modal h1 {
+  font-size: 400%;
+  -webkit-animation: bobble 1s infinite;
+}
+.modal button {
+  display: block;
+  font-size: 200%;
+  width: 150px;
+  padding: .2em .5em;
+  margin: 20px auto;
+  border: 2px solid white;
+  border-radius: 20px;
+  box-shadow: inset 0px 0px 1px #000;
+  background: #ff0;
+  background: -moz-linear-gradient(top, #ffc 0%, #ff0);
+  background: -webkit-gradient( linear, left top, left bottom, from(#ffc), to(#ff0));
+  color: #000;
+  border-image: initial;
+}
+.modal p {
+  font-size: 60%;
+}
+.modal a {
+  color: #cf0;
+}
+
+h1, h2, h3, button {
+  font-family: 'Bubblegum Sans', sans-serif;
+  font-weight: 400;
+}
+button {
+  cursor: pointer;
+}
+
 #debug {
   display: none;
   position: absolute;
@@ -51,4 +103,10 @@ html, body {
   color: #fff;
   font-family: monospace;
   min-width: 300px;
+}
+
+@-webkit-keyframes bobble {
+  0%   { -webkit-transform: rotateZ(-9deg); }
+  50%  { -webkit-transform: rotateZ(-3deg); }
+  100% { -webkit-transform: rotateZ(-9deg); }
 }

@@ -77,6 +77,8 @@ function createDuckie() {
 // ====
 
 function init() {
+  $('#menu').show();
+
   var canvas = $('canvas');
   var debug = $('#debug');
   var renderer = new GLGE.Renderer(canvas[0]);
