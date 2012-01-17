@@ -106,7 +106,7 @@ var DuckCollection = Backbone.Collection.extend({
 
 var GameController = Backbone.View.extend({
 
-  FRAME_RATE: 30,
+  FRAME_RATE: 40,
   NUM_DUCKS: 12,
 
   LEFT: -15,

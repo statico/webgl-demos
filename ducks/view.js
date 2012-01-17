@@ -69,7 +69,7 @@ function createDuckie() {
 
 function init() {
   var canvas = $('canvas');
-  var debug = $('#debug');
+  var debug = $('#debug').hide();
   var renderer = new GLGE.Renderer(canvas[0]);
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);
@@ -127,13 +127,12 @@ function init() {
     target.setLocY(a.targetY);
 
     // If the ship direction has changed, make it bank to one side or the other.
+    // BUG: Sometimes the plane banks the wrong way.
     var newBank = a.delta < 0 ? -1 : a.delta > 0 ? 1 : 0;
     if (newBank != oldBank) {
       ship.blendTo({ DRotZ: newBank }, 500);
       oldBank = newBank;
     }
-
-    debug.text([Math.round(a.dir), Math.round(a.delta), a.speed, oldBank].join(', '));
   });
 
   // When a duck is added, create it and add it to the scene. Keep track of it
