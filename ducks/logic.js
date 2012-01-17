@@ -31,7 +31,7 @@ var Ship = Backbone.Model.extend({
 
   RADIUS: 1,
   MIN_SPEED: 0.3,
-  MAX_SPEED: 0.5,
+  MAX_SPEED: 0.6,
   ACCELERATION: 0.005,
   MAX_TURN_SPEED: 3,
 
@@ -184,7 +184,7 @@ var GameController = Backbone.View.extend({
       }, this);
 
       if (this.ducks.isEmpty()) {
-        this.trigger('gameOver');
+        this.trigger('gameover');
       }
     }
   }

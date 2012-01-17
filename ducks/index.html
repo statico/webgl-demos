@@ -26,14 +26,32 @@
           Guide the plane with the mouse and gather the duckies
           as fast as you can!
         </h2>
-        <button>Play!</button>
-        <p>
+        <div class="padded">
+          <button>Play!</button>
+        </div>
+        <p class="info">
           An HTML5 game by <a href="http://langworth.com">Ian Langworth</a>.
           <br/>
           Music: "Canopy" by <a href="http://www.nosoapradio.us/">NoSoapRadio</a>.
           <br/>
           Built using <a href="http://www.glge.org/">GLGE</a>
           and <a href="https://github.com/statico/webgl-demos/tree/ducks">lots more...</a>
+        </p>
+      </div>
+    </div>
+
+    <div id="scorecard" class="modal">
+      <div class="inner">
+        <h2>Nice job! Your time:</h2>
+        <h1 class="wobble time"><!-- 15 seconds --></h1>
+        <h2>Your rank:</h2>
+        <h1 class="wobble2 rank"><!-- Friendly Mallard --></h1>
+        <h2 class="suggestion"><!-- (That's pretty good) --></h2>
+        <div class="padded">
+          <button>Play again!</button>
+        </div>
+        <p class="info">
+          <!-- We'll populate this element from the p.info above. -->
         </p>
       </div>
     </div>

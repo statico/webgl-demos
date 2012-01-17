@@ -78,12 +78,16 @@ function createDuckie() {
 
 function init() {
   var menu = $('#menu').show();
+  var scorecard = $('#scorecard').hide();
+  scorecard.find('.info').html(menu.find('.info').html());
+
   var canvas = $('canvas');
   var debug = $('#debug');
 
   var renderer = new GLGE.Renderer(canvas[0]);
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);
+  window.camera = scene.getCamera(); // XXX
 
   var bob = doc.getElement('bob');
   var disappear = doc.getElement('disappear');
@@ -123,9 +127,22 @@ function init() {
     }
   });
 
+  canvas.on('click', function() {
+    menu.hide(); game.trigger('gameover'); // XXX
+  });
+
+  // Show the scorecard when the game has finished.
+  game.bind('gameover', function() {
+    scorecard.show();
+    game.ship.set(game.ship.defaults);
+    game.start(game.DEMO_MODE);
+  });
+
   // Update the model during any mouse movements.
   canvas.on('mousemove', function(e) {
     if (game.mode !== game.PLAY_MODE) return;
+    // This is stupid. I should really be casting a ray from the camera to the
+    // ground, but I'm lazy, and this is close enough.
     var mx = e.offsetX, my = e.offsetY;
     var cw = canvas.width(), ch = canvas.height();
     var vx = (mx / cw) * (viewport.right + -viewport.left) + viewport.left;
@@ -182,6 +199,7 @@ function init() {
   function resize() {
     var w = $(window).width(), h = $(window).height();
     canvas.attr({ width: w, height: h });
+    scene.getCamera().setAspect(w / h);
     renderer.clearViewport();
   }
   $(document).on('ready', resize);
@@ -194,12 +212,15 @@ function init() {
     renderer.render();
   })();
 
-  // Handle the big "Play!" button on the menu.
-  menu.on('click button', function() {
+  // Handle the big "Play!" button on the menu and scorecard.
+  function startNewGame() {
     game.start(game.PLAY_MODE);
     game.ship.set(game.ship.defaults);
     menu.hide();
-  });
+    scorecard.hide();
+  }
+  menu.on('click button', startNewGame);
+  scorecard.on('click button', startNewGame);
 
   // Start the demo.
   game.start(game.DEMO_MODE);

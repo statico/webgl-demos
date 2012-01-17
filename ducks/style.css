@@ -63,11 +63,8 @@ html, body {
   font-size: 400%;
 }
 .modal button {
-  display: block;
   font-size: 200%;
-  width: 150px;
-  padding: .2em .5em;
-  margin: 20px auto;
+  padding: .2em 1em;
   border: 2px solid white;
   border-radius: 20px;
   box-shadow: inset 0px 0px 1px #000;
@@ -82,6 +79,9 @@ html, body {
 }
 .modal a {
   color: #cf0;
+}
+.modal .padded {
+  margin: 20px auto;
 }
 
 h1, h2, h3, button {
