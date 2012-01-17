@@ -61,7 +61,6 @@ html, body {
 }
 .modal h1 {
   font-size: 400%;
-  -webkit-animation: bobble 1s infinite;
 }
 .modal button {
   display: block;
@@ -105,8 +104,20 @@ button {
   min-width: 300px;
 }
 
-@-webkit-keyframes bobble {
+.wobble {
+  -webkit-animation: wobble 1s infinite;
+}
+@-webkit-keyframes wobble {
   0%   { -webkit-transform: rotateZ(-9deg); }
   50%  { -webkit-transform: rotateZ(-3deg); }
   100% { -webkit-transform: rotateZ(-9deg); }
+}
+
+.wobble2 {
+  -webkit-animation: wobble2 1s infinite;
+}
+@-webkit-keyframes wobble2 {
+  0%   { -webkit-transform: rotateZ(-3deg); }
+  50%  { -webkit-transform: rotateZ(-9deg); }
+  100% { -webkit-transform: rotateZ(-3deg); }
 }
