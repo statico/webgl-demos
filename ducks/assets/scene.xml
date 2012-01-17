@@ -12,11 +12,11 @@
   <!-- A magical, reflective water material. From the GLGE example. Scale has been tweaked.-->
   <material id="water" specular="0.2" shininess="50" color="#aaf" emit="0.001">
 
-    <texture id="waterheight" src="assets/waterheight.jpg" />
+    <texture id="waterheight" src="waterheight.jpg" />
     <material_layer texture="#waterheight" mapinput="UV1" frame_rate="25" height="0.07"
       animation="#flow" mapto="M_HEIGHT" scale_x="2" scale_y="2" />
 
-    <texture id="waternormal" src="assets/waternormal.jpg" />
+    <texture id="waternormal" src="waternormal.jpg" />
     <material_layer texture="#waternormal" mapinput="UV1" mapto="M_NOR"
       scale="1" scale_y="1" />
 

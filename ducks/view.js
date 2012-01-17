@@ -54,7 +54,7 @@ ship.setDocument('assets/seymourplane_triangulate.dae', null, assetFinished);
 
 var doc = new GLGE.Document();
 doc.onLoad = assetFinished;
-doc.load('scene.xml');
+doc.load('assets/scene.xml');
 
 // Duck Object Creation
 // ====================
