@@ -245,6 +245,9 @@ function init() {
       scene.removeChild(obj);
       delete ducks[obj.cid];
     });
+    _.each(models, function(model) {
+      game.ducks.trigger('add', model);
+    });
   });
 
   // Handle canvas resizing (buggy)
