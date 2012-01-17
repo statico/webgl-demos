@@ -23,14 +23,23 @@ window.requestAnimFrame = (function(){
 // ============
 //
 // Because GLGE calls GLGE.Document.onLoad() prior to COLLADA models being
-// loaded.
+// loaded. It'd be nice to have a Grand Unified Asset Management System that
+// handled JavaScript, GLGE scne XML, COLLADA models and their images, and
+// audio.
 
 var NUM_ASSETS = 4;
 
 var assetFinished = (function() {
   var count = 0;
+  var display = $('#preloader');
   return function() {
-    if (++count == NUM_ASSETS) init();
+    count++;
+    if (count == NUM_ASSETS) {
+      display.remove();
+      init();
+    } else {
+      display.find('.inner').width(count / NUM_ASSETS * 100 + '%');
+    }
   };
 })();
 
@@ -69,7 +78,7 @@ function createDuckie() {
 
 function init() {
   var canvas = $('canvas');
-  var debug = $('#debug').hide();
+  var debug = $('#debug');
   var renderer = new GLGE.Renderer(canvas[0]);
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);

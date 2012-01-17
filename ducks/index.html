@@ -4,35 +4,17 @@
 
     <title>ducks</title>
     <meta charset="utf-8"/>
-
-    <style type="text/css">
-      * {
-        margin: 0;
-        padding: 0;
-        cursor: pointer;
-      }
-      html, body {
-        width: 100%;
-        height: 100%;
-        background: #ccc;
-        overflow: hidden;
-      }
-      #debug {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        padding: 3px;
-        background: rgba(0,0,0,.5);
-        color: #fff;
-        font-family: monospace;
-        min-width: 300px;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 
   </head>
   <body>
 
     <canvas id="canvas" width="1024" height="768"></canvas>
+    <div id="preloader">
+      <span class="outer">
+        <span class="inner">&nbsp;</span>
+      </span>
+    </div>
     <div id="debug"></div>
 
     <script src="../vendor/glge-compiled.js"></script>
@@ -42,6 +24,7 @@
 
     <script src="logic.js"></script>
     <script src="view.js"></script>
+
     <!-- See also scene.xml -->
 
   </body>
