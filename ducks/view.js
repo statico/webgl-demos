@@ -114,14 +114,26 @@ function init() {
 
   // When the ship or target move, update the GLGE objects. Currently the game
   // and OpenGL are using the same units so no translation needs to be done.
+  var oldBank = 0;
   game.ship.bind('change', function(model) {
+    // Update the ship model.
     var a = model.attributes;
     ship.setLocX(a.x);
     ship.setLocY(a.y);
     ship.setRotY(Trig.deg2rad(a.dir) + 1.57);
+
+    // Update the mouse target.
     target.setLocX(a.targetX);
     target.setLocY(a.targetY);
-    debug.text(Math.round(a.dir) + ', ' + Math.round(a.delta) + ', ' + a.speed);
+
+    // If the ship direction has changed, make it bank to one side or the other.
+    var newBank = a.delta < 0 ? -1 : a.delta > 0 ? 1 : 0;
+    if (newBank != oldBank) {
+      ship.blendTo({ DRotZ: newBank }, 500);
+      oldBank = newBank;
+    }
+
+    debug.text([Math.round(a.dir), Math.round(a.delta), a.speed, oldBank].join(', '));
   });
 
   // When a duck is added, create it and add it to the scene. Keep track of it

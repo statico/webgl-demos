@@ -31,7 +31,7 @@ var Ship = Backbone.Model.extend({
 
   RADIUS: 1,
   MIN_SPEED: 0.3,
-  MAX_SPEED: 0.4,
+  MAX_SPEED: 0.5,
   ACCELERATION: 0.005,
   MAX_TURN_SPEED: 3,
 
