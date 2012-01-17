@@ -19,6 +19,43 @@ window.requestAnimFrame = (function(){
   };
 })();
 
+// Audio
+// =====
+
+var soundfx = new Jukebox({
+  resources: [
+    'assets/soundfx.mp3',
+    'assets/soundfx.ogg'
+  ],
+  spritemap: {
+    pickup: {
+      start: 0.00,
+      end: 1.47,
+      loop: false
+    }
+  }
+});
+soundfx.setVolume(0.7);
+
+var music = new Jukebox({
+  resources: [
+    'assets/DST-Canopy.mp3',
+    'assets/DST-Canopy.ogg'
+  ],
+  loop: true,
+  spritemap: {
+    track1: {
+      start: 0.00,
+      end: 63.94,
+      loop: true
+    }
+  }
+});
+music.setVolume(0.5);
+
+window.soundfx = soundfx; //XXX
+window.music = music; //XXX
+
 // Asset system
 // ============
 //
@@ -27,21 +64,36 @@ window.requestAnimFrame = (function(){
 // handled JavaScript, GLGE scne XML, COLLADA models and their images, and
 // audio.
 
-var NUM_ASSETS = 4;
+var NUM_ASSETS = 6;
 
 var assetFinished = (function() {
-  var count = 0;
   var display = $('#preloader');
+
+  // Start count at one so the progress bar starts with some progress.
+  var count = 1;
+
+  // In case something stalls, start the game anyway.
+  var timeout = setTimeout(function() {
+    alert(1);
+    display.remove();
+    init();
+  }, 10000);
+
   return function() {
     count++;
-    if (count == NUM_ASSETS) {
+    if (count > NUM_ASSETS) { // Not >=, then init() would be called twice.
+      clearTimeout(timeout);
       display.remove();
       init();
     } else {
       display.find('.inner').width(count / NUM_ASSETS * 100 + '%');
     }
+    return true;
   };
 })();
+
+$(music.context).on('canplay', assetFinished);
+$(soundfx.context).on('canplay', assetFinished);
 
 var duck = new GLGE.Collada();
 duck.setDocument('assets/duck.dae', null, assetFinished);
@@ -228,7 +280,8 @@ function init() {
   menu.on('click button', startNewGame);
   scorecard.on('click button', startNewGame);
 
-  // Start the demo.
+  // Start the demo and play some music.
   game.start(game.DEMO_MODE);
+  music.play('track1');
 
 }
