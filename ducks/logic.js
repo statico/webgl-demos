@@ -127,13 +127,12 @@ var GameController = Backbone.View.extend({
   start: function(mode) {
     var _this = this;
 
-    this.isRunning = true;
-    this.startTime = new Date().getTime();
-
-    if (mode) {
+    if (typeof mode !== 'undefined') {
       this.mode = mode;
     }
 
+    this.isRunning = true;
+    this.startTime = new Date().getTime();
     this.ducks.reset();
     this.ship.set(this.ship.defaults);
 
@@ -159,6 +158,7 @@ var GameController = Backbone.View.extend({
     this.interval = setInterval(function() {
       _this.tick();
     }, 1000 / this.FRAME_RATE);
+
     this.trigger('start');
   },
 

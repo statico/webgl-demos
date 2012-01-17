@@ -164,8 +164,6 @@ function init() {
     }
   });
 
-  $(window).on('keyup', function() {game.ducks.reset();}); //XXX
-
   // Show the scorecard when the last duck has been cleared. Wait a little bit
   // after the duck is cleared, otherwise the experience is sudden and jarring.
   game.bind('gameover', function(seconds) {
@@ -211,7 +209,7 @@ function init() {
     // BUG: Sometimes the plane banks the wrong way.
     var newBank = a.delta < 0 ? -1 : a.delta > 0 ? 1 : 0;
     if (newBank != oldBank) {
-      ship.blendTo({ DRotZ: newBank }, 500);
+      ship.blendTo({ DRotZ: newBank * 0.7 }, 500);
       oldBank = newBank;
     }
   });
@@ -273,8 +271,8 @@ function init() {
     menu.hide();
     scorecard.hide();
   }
-  menu.on('click button', startNewGame);
-  scorecard.on('click button', startNewGame);
+  menu.on('click', 'button', startNewGame);
+  scorecard.on('click', 'button', startNewGame);
 
   // Start the demo and play some music.
   game.start(game.DEMO_MODE);
