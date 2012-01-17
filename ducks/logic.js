@@ -30,15 +30,15 @@ var Trig = {
 var Ship = Backbone.Model.extend({
 
   RADIUS: 1,
-  FORWARD_THRUST: 0.2,
-  MAX_TURN_SPEED: 0.1,
+  FORWARD_THRUST: 0.3,
+  MAX_TURN_SPEED: 3,
 
   defaults: {
     x: -15,
     y: 0,
     vx: 0,
     vy: 0,
-    heading: 0,
+    dir: 0,
     targetX: 0,
     targetY: 0
   },
@@ -48,19 +48,35 @@ var Ship = Backbone.Model.extend({
 
     // Calculate the new heading. Don't let the ship turn faster than
     // TURN_SPEED.
-    var direction = Trig.angle(old.x, old.y, old.targetX, old.targetY);
-    var heading, delta = old.heading - direction;
-    if (Math.abs(delta) > this.MAX_TURN_SPEED) {
-      heading = old.heading + this.MAX_TURN_SPEED * (delta < 0 ? 1 : -1);
-    } else {
-      heading = direction;
+    //
+    // There are smarter solutions for turrent rotation involving dot products
+    // and cross products, but I'm going to go with the simple solution:
+    // http://stackoverflow.com/questions/1048945
+    var M = this.MAX_TURN_SPEED;
+    var dir = Trig.angleDeg(old.x, old.y, old.targetX, old.targetY);
+    var delta = Math.abs(old.dir - dir);
+    if (delta > M * 3) {
+      if (dir > old.dir) {
+        if (dir - old.dir < 180) {
+          dir = old.dir + M;
+        } else {
+          dir = old.dir - M;
+        }
+      } else if (dir < old.dir) {
+        if (old.dir - dir < 180) {
+          dir = old.dir - M;
+        } else {
+          dir = old.dir + M;
+        }
+      }
     }
 
-    var vx = Math.cos(heading) * this.FORWARD_THRUST;
-    var vy = Math.sin(heading) * this.FORWARD_THRUST;
+    var vx = Math.cos(Trig.deg2rad(dir)) * this.FORWARD_THRUST;
+    var vy = Math.sin(Trig.deg2rad(dir)) * this.FORWARD_THRUST;
 
     this.set({
-      heading: heading,
+      delta: delta,
+      dir: dir % 360,
       vx: vx,
       vy: vy,
       x: old.x + vx,

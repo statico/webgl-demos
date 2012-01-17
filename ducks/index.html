@@ -17,12 +17,23 @@
         background: #ccc;
         overflow: hidden;
       }
+      #debug {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 3px;
+        background: rgba(0,0,0,.5);
+        color: #fff;
+        font-family: monospace;
+        min-width: 300px;
+      }
     </style>
 
   </head>
   <body>
 
-    <canvas id="canvas"/>
+    <canvas id="canvas"></canvas>
+    <div id="debug"></div>
 
     <script src="../vendor/glge-compiled.js"></script>
     <script src="../vendor/jquery-1.7.1.min.js"></script>

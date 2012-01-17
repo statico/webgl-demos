@@ -69,6 +69,7 @@ function createDuckie() {
 
 function init() {
   var canvas = $('canvas');
+  var debug = $('#debug');
   var renderer = new GLGE.Renderer(canvas[0]);
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);
@@ -120,6 +121,7 @@ function init() {
     ship.setRotY(Trig.angle(0, 0, a.vx, a.vy) + 1.57);
     target.setLocX(a.targetX);
     target.setLocY(a.targetY);
+    debug.text(Math.round(a.dir) + ', ' + Math.round(a.delta));
   });
 
   // When a duck is added, create it and add it to the scene. Keep track of it
