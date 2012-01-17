@@ -77,10 +77,10 @@ function createDuckie() {
 // ====
 
 function init() {
-  $('#menu').show();
-
+  var menu = $('#menu').show();
   var canvas = $('canvas');
   var debug = $('#debug');
+
   var renderer = new GLGE.Renderer(canvas[0]);
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);
@@ -114,8 +114,18 @@ function init() {
   var ducks = {};
   var game = new GameController();
 
+  // Show or hide the target depending on the game mode.
+  game.bind('start', function() {
+    if (game.mode === game.PLAY_MODE) {
+      target.setVisible(GLGE.TRUE);
+    } else {
+      target.setVisible(GLGE.FALSE);
+    }
+  });
+
   // Update the model during any mouse movements.
   canvas.on('mousemove', function(e) {
+    if (game.mode !== game.PLAY_MODE) return;
     var mx = e.offsetX, my = e.offsetY;
     var cw = canvas.width(), ch = canvas.height();
     var vx = (mx / cw) * (viewport.right + -viewport.left) + viewport.left;
@@ -184,7 +194,14 @@ function init() {
     renderer.render();
   })();
 
-  // Start the game.
-  game.start();
+  // Handle the big "Play!" button on the menu.
+  menu.on('click button', function() {
+    game.start(game.PLAY_MODE);
+    game.ship.set(game.ship.defaults);
+    menu.hide();
+  });
+
+  // Start the demo.
+  game.start(game.DEMO_MODE);
 
 }

@@ -114,13 +114,27 @@ var GameController = Backbone.View.extend({
   TOP: 5,
   BOTTOM: -5,
 
+  DEMO_MODE: 0,
+  PLAY_MODE: 1,
+
   initialize: function() {
     this.ship = new Ship();
     this.ducks = new DuckCollection();
+    this.mode = this.DEMO_MODE;
   },
 
-  start: function() {
+  start: function(mode) {
     var _this = this;
+
+    if (mode) {
+      this.mode = mode;
+    }
+
+    this.ducks.each(function(duck) {
+      this.ducks.remove(duck);
+    }, this);
+
+    this.setTarget(0, 0);
 
     var x, y;
     var MIN_DISTANCE = Duck.prototype.RADIUS * 3;
@@ -144,6 +158,7 @@ var GameController = Backbone.View.extend({
     this.interval = setInterval(function() {
       _this.tick();
     }, 1000 / this.FRAME_RATE);
+    this.trigger('start');
   },
 
   setTarget: function(x, y) {
@@ -158,17 +173,19 @@ var GameController = Backbone.View.extend({
 
     var sa = this.ship.attributes;
     var max = Ship.prototype.RADIUS + Duck.prototype.RADIUS;
-    this.ducks.each(function(duck) {
-      var da = duck.attributes;
-      var distance = Trig.distance(sa.x, sa.y, da.x, da.y);
-      if (distance < max) {
-        this.ducks.remove(duck);
-      }
-    }, this);
+    if (this.mode === this.PLAY_MODE) {
 
-    if (this.ducks.isEmpty()) {
-      this.trigger('gameOver');
-      clearInterval(this.interval);
+      this.ducks.each(function(duck) {
+        var da = duck.attributes;
+        var distance = Trig.distance(sa.x, sa.y, da.x, da.y);
+        if (distance < max) {
+          this.ducks.remove(duck);
+        }
+      }, this);
+
+      if (this.ducks.isEmpty()) {
+        this.trigger('gameOver');
+      }
     }
   }
 
