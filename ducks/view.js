@@ -1,7 +1,7 @@
 /*!
  * Ducks Game UI.
  *
- * Requires: jQuery
+ * Requires: jQuery, GLGE, SoundManager 2
  */
 
 // Utilities
@@ -22,40 +22,6 @@ window.requestAnimFrame = (function(){
 // Audio
 // =====
 
-var soundfx = new Jukebox({
-  resources: [
-    'assets/soundfx.mp3',
-    'assets/soundfx.ogg'
-  ],
-  spritemap: {
-    pickup: {
-      start: 0.00,
-      end: 1.47,
-      loop: false
-    }
-  }
-});
-soundfx.setVolume(0.7);
-
-var music = new Jukebox({
-  resources: [
-    'assets/DST-Canopy.mp3',
-    'assets/DST-Canopy.ogg'
-  ],
-  loop: true,
-  spritemap: {
-    track1: {
-      start: 0.00,
-      end: 63.94,
-      loop: true
-    }
-  }
-});
-music.setVolume(0.5);
-
-window.soundfx = soundfx; //XXX
-window.music = music; //XXX
-
 // Asset system
 // ============
 //
@@ -64,27 +30,33 @@ window.music = music; //XXX
 // handled JavaScript, GLGE scne XML, COLLADA models and their images, and
 // audio.
 
-var NUM_ASSETS = 6;
+var NUM_ASSETS = 5;
 
 var assetFinished = (function() {
   var display = $('#preloader');
+
+  // Make sure we don't call init() multiple times.
+  var done = false;
+  if (done) return;
 
   // Start count at one so the progress bar starts with some progress.
   var count = 1;
 
   // In case something stalls, start the game anyway.
-  var timeout = setTimeout(function() {
-    alert(1);
+  var timeout = setTimeout(onComplete, 10000);
+
+  function onComplete() {
+    if (done) return;
     display.remove();
     init();
-  }, 10000);
+    done = true;
+  }
 
   return function() {
     count++;
-    if (count > NUM_ASSETS) { // Not >=, then init() would be called twice.
+    if (count > NUM_ASSETS) {
       clearTimeout(timeout);
-      display.remove();
-      init();
+      onComplete();
     } else {
       display.find('.inner').width(count / NUM_ASSETS * 100 + '%');
     }
@@ -92,8 +64,18 @@ var assetFinished = (function() {
   };
 })();
 
-$(music.context).on('canplay', assetFinished);
-$(soundfx.context).on('canplay', assetFinished);
+function makeAudio(path, loop, volume) {
+  var el = new Audio();
+  $(el).on('canplay', assetFinished);
+  el.src = 'assets/pickup.ogg';
+  el.preload = true;
+  el.loop = loop;
+  el.volume = volume;
+  return el;
+}
+
+pickupSound = makeAudio('assets/pickup.ogg', false, 0.7);
+soundtrack = makeAudio('assets/DST-Canopy.ogg', true, 0.5);
 
 var duck = new GLGE.Collada();
 duck.setDocument('assets/duck.dae', null, assetFinished);
@@ -260,7 +242,7 @@ function init() {
     delete ducks[model.cid];
 
     if (game.mode === game.PLAY_MODE) {
-      soundfx.play('pickup', true);
+      pickupSound.play();
     }
   });
 
@@ -300,6 +282,6 @@ function init() {
 
   // Start the demo and play some music.
   game.start(game.DEMO_MODE);
-  music.play('track1');
+  soundtrack.play();
 
 }
