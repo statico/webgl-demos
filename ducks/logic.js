@@ -53,22 +53,15 @@ var Ship = Backbone.Model.extend({
     // and cross products, but I'm going to go with the simple solution:
     // http://stackoverflow.com/questions/1048945
     var M = this.MAX_TURN_SPEED;
-    var dir = Trig.angleDeg(old.x, old.y, old.targetX, old.targetY);
-    var delta = Math.abs(old.dir - dir);
-    if (delta > M * 3) {
-      if (dir > old.dir) {
-        if (dir - old.dir < 180) {
-          dir = old.dir + M;
-        } else {
-          dir = old.dir - M;
-        }
-      } else if (dir < old.dir) {
-        if (old.dir - dir < 180) {
-          dir = old.dir - M;
-        } else {
-          dir = old.dir + M;
-        }
-      }
+    var dir = old.dir;
+    var target = Trig.angleDeg(old.x, old.y, old.targetX, old.targetY);
+    var delta = (dir - target) % 360;
+    if (Math.abs(delta) > M) {
+      var change = (delta < 0) ? 1 : -1;
+      if (Math.abs(delta) > 180) change = 0 - change;
+      dir += change * M;
+    } else {
+      dir = target;
     }
 
     var vx = Math.cos(Trig.deg2rad(dir)) * this.FORWARD_THRUST;
