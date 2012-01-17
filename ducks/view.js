@@ -1,7 +1,7 @@
 /*!
  * Ducks Game UI.
  *
- * Requires: jQuery, GLGE, SoundManager 2
+ * Requires: jQuery, GLGE
  */
 
 // Utilities
@@ -64,18 +64,11 @@ var assetFinished = (function() {
   };
 })();
 
-function makeAudio(path, loop, volume) {
-  var el = new Audio();
-  $(el).on('canplay', assetFinished);
-  el.src = 'assets/pickup.ogg';
-  el.preload = true;
-  el.loop = loop;
-  el.volume = volume;
-  return el;
-}
+var pickup = new buzz.sound('assets/pickup', { formats: ['ogg', 'mp3'] });
+pickup.setVolume(70).whenReady(assetFinished);
 
-pickupSound = makeAudio('assets/pickup.ogg', false, 0.7);
-soundtrack = makeAudio('assets/DST-Canopy.ogg', true, 0.5);
+var music = new buzz.sound('assets/DST-Canopy', { formats: ['ogg', 'mp3'] });
+music.setVolume(50).whenReady(assetFinished);
 
 var duck = new GLGE.Collada();
 duck.setDocument('assets/duck.dae', null, assetFinished);
@@ -242,7 +235,7 @@ function init() {
     delete ducks[model.cid];
 
     if (game.mode === game.PLAY_MODE) {
-      pickupSound.play();
+      pickup.stop().play();
     }
   });
 
@@ -282,6 +275,6 @@ function init() {
 
   // Start the demo and play some music.
   game.start(game.DEMO_MODE);
-  soundtrack.play();
+  music.play();
 
 }
