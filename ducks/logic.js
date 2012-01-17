@@ -36,7 +36,7 @@ var Ship = Backbone.Model.extend({
   MAX_TURN_SPEED: 3,
 
   defaults: {
-    x: -15,
+    x: -20,
     y: 0,
     vx: 0,
     vy: 0,
@@ -126,6 +126,8 @@ var GameController = Backbone.View.extend({
   start: function(mode) {
     var _this = this;
 
+    this.startTime = new Date().getTime();
+
     if (mode) {
       this.mode = mode;
     }
@@ -134,7 +136,7 @@ var GameController = Backbone.View.extend({
       this.ducks.remove(duck);
     }, this);
 
-    this.setTarget(0, 0);
+    this.ship.set(this.ship.defaults);
 
     var x, y;
     var MIN_DISTANCE = Duck.prototype.RADIUS * 3;
@@ -184,8 +186,23 @@ var GameController = Backbone.View.extend({
       }, this);
 
       if (this.ducks.isEmpty()) {
-        this.trigger('gameover');
+        var seconds = Math.floor((new Date().getTime() - this.startTime) / 1000);
+        this.trigger('gameover', seconds);
       }
+    }
+  },
+
+  getRank: function(seconds) {
+    if (seconds < 10) {
+      return ["Emporer Goose", "(Time to join the pros!)"];
+    } else if (seconds < 15) {
+      return ["Trumpeter Swan", "(That's pretty good!)"];
+    } else if (seconds < 20) {
+      return ["Mallard", "(Not too shabby!)"];
+    } else if (seconds < 25) {
+      return ["Northern Shoveler", "(The ducks are patient!)"];
+    } else {
+      return ["Bufflehead", "(The ducks fell asleep!)"];
     }
   }
 

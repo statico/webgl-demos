@@ -84,6 +84,7 @@ function init() {
   var canvas = $('canvas');
   var debug = $('#debug');
 
+  // Standard GLGE initialization.
   var renderer = new GLGE.Renderer(canvas[0]);
   scene = doc.getElement('mainscene');
   renderer.setScene(scene);
@@ -92,6 +93,7 @@ function init() {
   var bob = doc.getElement('bob');
   var disappear = doc.getElement('disappear');
 
+  // TODO: Update this.
   var viewport = {
     top: 14,
     bottom: -14,
@@ -127,20 +129,20 @@ function init() {
     }
   });
 
-  canvas.on('click', function() {
-    menu.hide(); game.trigger('gameover'); // XXX
-  });
-
   // Show the scorecard when the game has finished.
-  game.bind('gameover', function() {
+  game.bind('gameover', function(seconds) {
+    var rank = game.getRank(seconds);
+    scorecard.find('.time').text(seconds + ' sec.');
+    scorecard.find('.rank').text(rank[0]);
+    scorecard.find('.byline').text(rank[1]);
     scorecard.show();
-    game.ship.set(game.ship.defaults);
     game.start(game.DEMO_MODE);
   });
 
   // Update the model during any mouse movements.
   canvas.on('mousemove', function(e) {
     if (game.mode !== game.PLAY_MODE) return;
+
     // This is stupid. I should really be casting a ray from the camera to the
     // ground, but I'm lazy, and this is close enough.
     var mx = e.offsetX, my = e.offsetY;
@@ -154,6 +156,7 @@ function init() {
   // and OpenGL are using the same units so no translation needs to be done.
   var oldBank = 0;
   game.ship.bind('change', function(model) {
+
     // Update the ship model.
     var a = model.attributes;
     ship.setLocX(a.x);
@@ -180,7 +183,10 @@ function init() {
     obj.setLocX(model.attributes.x);
     obj.setLocY(model.attributes.y);
     obj.setAnimation(bob);
+
+    // Start the bobbing at a random frame so each duck bobs independently.
     obj.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000);
+
     scene.addChild(obj);
     ducks[model.cid] = obj; // Backbone generates the cid property automatically.
   });
@@ -193,6 +199,7 @@ function init() {
     obj.addEventListener('animFinished', function() {
       scene.removeChild(obj);
     });
+    delete ducks[model.cid];
   });
 
   // Handle canvas resizing (buggy)
@@ -215,7 +222,6 @@ function init() {
   // Handle the big "Play!" button on the menu and scorecard.
   function startNewGame() {
     game.start(game.PLAY_MODE);
-    game.ship.set(game.ship.defaults);
     menu.hide();
     scorecard.hide();
   }
