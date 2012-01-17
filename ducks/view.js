@@ -113,8 +113,9 @@ doc.load('assets/scene.xml');
 //
 // A cheesy way to clone COLLADA objects until GLGE supports this.
 
-function createDuckie() {
+function createDuckie(model, animation) {
   if (!duck.xml) throw new Error("Collada model not loaded");
+
   var source = duck.getObjects()[0]; // Ew.
   var dest = new GLGE.Object();
   dest.setScale(0.01);
@@ -122,6 +123,13 @@ function createDuckie() {
   dest.setRotY(Math.random() * 2 * Math.PI);
   dest.setMesh(source.getMesh());
   dest.setMaterial(source.getMaterial());
+  dest.setLocX(model.attributes.x);
+  dest.setLocY(model.attributes.y);
+
+  // Start the bobbing at a random frame so each duck bobs independently.
+  dest.setAnimation(animation);
+  dest.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000);
+
   return dest;
 }
 
@@ -181,14 +189,19 @@ function init() {
     }
   });
 
-  // Show the scorecard when the game has finished.
+  $(window).on('keyup', function() {game.ducks.reset();}); //XXX
+
+  // Show the scorecard when the last duck has been cleared. Wait a little bit
+  // after the duck is cleared, otherwise the experience is sudden and jarring.
   game.bind('gameover', function(seconds) {
-    var rank = game.getRank(seconds);
-    scorecard.find('.time').text(seconds + ' sec.');
-    scorecard.find('.rank').text(rank[0]);
-    scorecard.find('.byline').text(rank[1]);
-    scorecard.show();
-    game.start(game.DEMO_MODE);
+    setTimeout(function() {
+      var rank = game.getRank(seconds);
+      scorecard.find('.time').text(seconds + ' sec.');
+      scorecard.find('.rank').text(rank[0]);
+      scorecard.find('.byline').text(rank[1]);
+      scorecard.show();
+      game.start(game.DEMO_MODE);
+    }, 1000);
   });
 
   // Update the model during any mouse movements.
@@ -231,19 +244,12 @@ function init() {
   // When a duck is added, create it and add it to the scene. Keep track of it
   // in the `ducks` map so we can remove it later.
   game.ducks.bind('add', function(model) {
-    var obj = createDuckie();
-    obj.setLocX(model.attributes.x);
-    obj.setLocY(model.attributes.y);
-    obj.setAnimation(bob);
-
-    // Start the bobbing at a random frame so each duck bobs independently.
-    obj.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000);
-
+    var obj = createDuckie(model, bob);
     scene.addChild(obj);
     ducks[model.cid] = obj; // Backbone generates the cid property automatically.
   });
 
-  // Remove a duck once it's removed from the collection.
+  // Remove a duck once it's removed from the collection invidiually.
   game.ducks.bind('remove', function(model) {
     var obj = ducks[model.cid];
     obj.setAnimation(disappear);
@@ -252,6 +258,18 @@ function init() {
       scene.removeChild(obj);
     });
     delete ducks[model.cid];
+
+    if (game.mode === game.PLAY_MODE) {
+      soundfx.play('pickup', true);
+    }
+  });
+
+  // If there's a bulk update to the ducks, don't do any animation.
+  game.ducks.bind('reset', function(models) {
+    _.each(_.values(ducks), function(obj) {
+      scene.removeChild(obj);
+      delete ducks[obj.cid];
+    });
   });
 
   // Handle canvas resizing (buggy)

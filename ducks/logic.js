@@ -121,21 +121,20 @@ var GameController = Backbone.View.extend({
     this.ship = new Ship();
     this.ducks = new DuckCollection();
     this.mode = this.DEMO_MODE;
+    this.isRunning = false;
   },
 
   start: function(mode) {
     var _this = this;
 
+    this.isRunning = true;
     this.startTime = new Date().getTime();
 
     if (mode) {
       this.mode = mode;
     }
 
-    this.ducks.each(function(duck) {
-      this.ducks.remove(duck);
-    }, this);
-
+    this.ducks.reset();
     this.ship.set(this.ship.defaults);
 
     var x, y;
@@ -187,7 +186,10 @@ var GameController = Backbone.View.extend({
 
       if (this.ducks.isEmpty()) {
         var seconds = Math.floor((new Date().getTime() - this.startTime) / 1000);
-        this.trigger('gameover', seconds);
+        if (this.isRunning) {
+          this.trigger('gameover', seconds);
+          this.isRunning = false;
+        }
       }
     }
   },
