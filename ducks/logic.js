@@ -195,13 +195,13 @@ var GameController = Backbone.View.extend({
   },
 
   getRank: function(seconds) {
-    if (seconds < 10) {
+    if (seconds <= 10) {
       return ["Emporer Goose", "(Time to join the pros!)"];
-    } else if (seconds < 15) {
+    } else if (seconds <= 15) {
       return ["Trumpeter Swan", "(That's pretty good!)"];
-    } else if (seconds < 20) {
+    } else if (seconds <= 20) {
       return ["Mallard", "(Not too shabby!)"];
-    } else if (seconds < 25) {
+    } else if (seconds <= 25) {
       return ["Northern Shoveler", "(The ducks are patient!)"];
     } else {
       return ["Bufflehead", "(The ducks fell asleep!)"];
