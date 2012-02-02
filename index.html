@@ -14,8 +14,16 @@
         font-size: 150%;
         color: #333;
         height: 100%;
-        background: #8f0000;
-        background: -webkit-radial-gradient(top left, ellipse cover, #e4f5fc 0%, #2ab0ed 100%);
+
+background: #e4f5fc;
+background: -moz-radial-gradient(top, ellipse cover,  #e4f5fc 0%, #2ab0ed 100%);
+background: -webkit-gradient(radial, top left, 0px, bottom right, 100%, color-stop(0%,#e4f5fc), color-stop(100%,#2ab0ed));
+background: -webkit-radial-gradient(top left, ellipse cover,  #e4f5fc 0%,#2ab0ed 100%);
+background: -o-radial-gradient(top left, ellipse cover,  #e4f5fc 0%,#2ab0ed 100%);
+background: -ms-radial-gradient(top left, ellipse cover,  #e4f5fc 0%,#2ab0ed 100%);
+background: radial-gradient(top left, ellipse cover,  #e4f5fc 0%,#2ab0ed 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4f5fc', endColorstr='#2ab0ed',GradientType=1 );
+
       }
     </style>
   </head>
