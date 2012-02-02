@@ -141,7 +141,7 @@ function init() {
   };
 
   // Initialize the player's ship.
-  ship.setLocZ(5);
+  ship.setLocZ(3);
   ship.setRotX(Math.PI / 2);
   ship.setRotY(Math.PI / 2);
   ship.setScale(0.3);
