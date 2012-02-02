@@ -30,7 +30,7 @@ window.requestAnimFrame = (function(){
 // handled JavaScript, GLGE scne XML, COLLADA models and their images, and
 // audio.
 
-var NUM_ASSETS = 5;
+var NUM_ASSETS = 6;
 
 var assetFinished = (function() {
   var display = $('#preloader');
@@ -78,6 +78,10 @@ target.setDocument('assets/target.dae', null, assetFinished);
 
 var ship = new GLGE.Collada();
 ship.setDocument('assets/seymourplane_triangulate.dae', null, assetFinished);
+
+var blankCursor = new Image();
+blankCursor.onload = assetFinished;
+blankCursor.src = 'assets/blank.cur';
 
 var doc = new GLGE.Document();
 doc.onLoad = assetFinished;
@@ -155,12 +159,15 @@ function init() {
   var ducks = {};
   var game = new GameController();
 
-  // Show or hide the target depending on the game mode.
+  // Show or hide the target and cursor depending on the game mode.
+  // Cursor-hiding tricks learned from http://stackoverflow.com/questions/2636068
   game.bind('start', function() {
     if (game.mode === game.PLAY_MODE) {
       target.setVisible(GLGE.TRUE);
+      canvas.css('cursor', 'url(' + blankCursor.src + '), none');
     } else {
       target.setVisible(GLGE.FALSE);
+      canvas.css('cursor', 'pointer');
     }
   });
 
