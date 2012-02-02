@@ -181,13 +181,22 @@ function init() {
   canvas.on('mousemove', function(e) {
     if (game.mode !== game.PLAY_MODE) return;
 
+    // Get the cursor position.
+    var mx, my;
+    if (typeof e.offsetX === 'undefined') {
+      mx = e.pageX - canvas.position().left;
+      my = e.pageY - canvas.position().top;
+    } else {
+      mx = e.offsetX;
+      my = e.offsetY;
+    }
+
     // This is stupid. I should really be casting a ray from the camera to the
     // ground, but I'm lazy, and this is close enough.
-    var mx = e.offsetX, my = e.offsetY;
     var cw = canvas.width(), ch = canvas.height();
     var vx = (mx / cw) * (viewport.right + -viewport.left) + viewport.left;
     var vy = (my / ch) * (viewport.top + -viewport.bottom) + viewport.bottom;
-    game.ship.set({ targetX: vx, targetY: -vy });
+    game.setTarget(vx, -vy);
   });
 
   // When the ship or target move, update the GLGE objects. Currently the game
