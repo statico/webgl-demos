@@ -56,7 +56,7 @@
           </animation_curve>
         </animation_vector>
 
-        <camera id="maincamera" loc_z="20" />
+        <camera id="maincamera" loc_z="20" fov_y="65" />
 
         <scene id="mainscene" camera="#maincamera" ambient_color="#fff" background_color="#000">
           <light id="mainlight" loc_y="5" type="L_POINT" />
@@ -144,8 +144,8 @@
 
           // TODO: Figure out the width and height of viewport in GLGE units.
           // Until then, these are heuristics....
-          var x = (e.clientX / canvas.width()) * 24 - 12;
-          var y = (e.clientY / canvas.height()) * -14 + 7;
+          var x = (e.clientX / canvas.width()) * 50 - 25;
+          var y = (e.clientY / canvas.height()) * -28 + 14;
           obj.setLoc(x, y, 0);
 
           scene.addChild(obj);
