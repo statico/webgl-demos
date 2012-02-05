@@ -124,7 +124,7 @@
         function resize() {
           var w = $(window).width(), h = $(window).height();
           canvas.attr({ width: w, height: h });
-          renderer.clearViewport();
+          scene.getCamera().setAspect(w / h);
         }
         $(document).on('ready', resize);
         $(window).on('resize', resize);
