@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<glge>
+
+  <camera id="maincamera" loc_z="10" />
+
+  <animation_vector id="bob" frames="60">
+
+    <animation_curve channel="DRotX">
+      <linear_point x="1" y="0" />
+      <linear_point x="15" y="-.2" />
+      <linear_point x="30" y="0" />
+      <linear_point x="45" y=".2" />
+      <linear_point x="60" y="0" />
+    </animation_curve>
+
+    <animation_curve channel="DRotY">
+      <linear_point x="1" y="0" />
+      <linear_point x="15" y="-.2" />
+      <linear_point x="30" y="0" />
+      <linear_point x="45" y="-.2" />
+      <linear_point x="60" y="0" />
+    </animation_curve>
+
+  </animation_vector>
+
+  <scene id="mainscene" camera="#maincamera"
+         ambient_color="#fff" background_color="#999">
+
+    <light id="mainlight" loc_y="5" type="L_POINT" />
+
+    <collada document="duck.dae" loc_x="-1" loc_y="-1"
+             animation="#bob" rot_order="ROT_ZYX"
+             rot_z="4.71" rot_x="1.57" scale=".01" />
+    <collada document="duck.dae" loc_x="-1" loc_y="1"
+             animation="#bob" rot_order="ROT_ZYX"
+             rot_z="4.71" rot_x="1.57" scale=".01" />
+    <collada document="duck.dae" loc_x="1" loc_y="-1"
+             animation="#bob" rot_order="ROT_ZYX"
+             rot_z="4.71" rot_x="1.57" scale=".01" />
+    <collada document="duck.dae" loc_x="1" loc_y="1"
+             animation="#bob" rot_order="ROT_ZYX"
+             rot_z="4.71" rot_x="1.57" scale=".01" />
+
+  </scene>
+
+</glge>
