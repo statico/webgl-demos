@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <body>
+
+    <canvas id="canvas" width="550" height="400"></canvas>
+
+    <script src="../vendor/glge-compiled-min.js"></script>
+
+    <script>
+      var doc = new GLGE.Document();
+
+      doc.onLoad = function() {
+        // Tell GLGE to use our canvas.
+        var renderer = new GLGE.Renderer(document.getElementById('canvas'));
+
+        // Set up the scene.
+        var scene = doc.getElement('mainscene');
+        renderer.setScene(scene);
+
+        // Simple stupid render loop.
+        setInterval(function() {
+          renderer.render();
+        }, 1000 / 30);
+      };
+
+      doc.load('scene.xml');
+    </script>
+
+  </body>
+</html>
