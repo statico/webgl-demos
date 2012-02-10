@@ -15,9 +15,9 @@
 
     <animation_curve channel="DRotY">
       <linear_point x="1" y="0" />
-      <linear_point x="15" y="-.2" />
+      <linear_point x="15" y="-.1" />
       <linear_point x="30" y="0" />
-      <linear_point x="45" y="-.2" />
+      <linear_point x="45" y="-.1" />
       <linear_point x="60" y="0" />
     </animation_curve>
 
