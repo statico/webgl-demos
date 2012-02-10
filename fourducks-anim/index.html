@@ -17,6 +17,13 @@
         var scene = doc.getElement('mainscene');
         renderer.setScene(scene);
 
+        // Animate each duck individually.
+        var i, duck;
+        for (i = 1; i <= 4; i++) {
+            duck = doc.getElement('duck' + i);
+            duck.animationStart = new Date().getTime() - Math.floor(Math.random() * 1000);
+        }
+
         // Simple stupid render loop.
         setInterval(function() {
           renderer.render();
