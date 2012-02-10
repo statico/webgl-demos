@@ -28,16 +28,16 @@
 
     <light id="mainlight" loc_y="5" type="L_POINT" />
 
-    <collada document="duck.dae" loc_x="-1" loc_y="-1"
+    <collada id="duck1" document="duck.dae" loc_x="-1" loc_y="-1"
              animation="#bob" rot_order="ROT_ZYX"
              rot_z="4.71" rot_x="1.57" scale=".01" />
-    <collada document="duck.dae" loc_x="-1" loc_y="1"
+    <collada id="duck2" document="duck.dae" loc_x="-1" loc_y="1"
              animation="#bob" rot_order="ROT_ZYX"
              rot_z="4.71" rot_x="1.57" scale=".01" />
-    <collada document="duck.dae" loc_x="1" loc_y="-1"
+    <collada id="duck3" document="duck.dae" loc_x="1" loc_y="-1"
              animation="#bob" rot_order="ROT_ZYX"
              rot_z="4.71" rot_x="1.57" scale=".01" />
-    <collada document="duck.dae" loc_x="1" loc_y="1"
+    <collada id="duck4" document="duck.dae" loc_x="1" loc_y="1"
              animation="#bob" rot_order="ROT_ZYX"
              rot_z="4.71" rot_x="1.57" scale=".01" />
 
