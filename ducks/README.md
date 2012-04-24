@@ -14,3 +14,5 @@ Target model is a modified version of ["Target" on the Google 3D Warehouse](http
 `DST-Canopy` is the song "Canopy" by [NoSoapRadio](http://www.nosoapradio.us/).
 
 Pickup sound generated using [Bfxr](http://www.bfxr.net/).
+
+Parts not written by me (Ian Langworth) are released under the terms of [the MIT license](http://www.opensource.org/licenses/MIT).
