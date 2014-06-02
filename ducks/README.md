@@ -5,7 +5,7 @@ Made with [GLGE](http://www.glge.org/). Uses [jQuery](http://jquery.com/).
 
 Uses [Paul Irisih's requestAnimationFrame snippet](http://paulirish.com/2011/requestanimationframe-for-smart-animating/) for the animation loop.
 
-Water texture from the [GLGE waterdemo](https://github.com/supereggbert/GLGE/tree/master/examples/waterdemo).
+Water material from the [GLGE waterdemo](https://github.com/supereggbert/GLGE/tree/master/examples/waterdemo).
 
 Duck model, duck icon and plane model are from the [COLLADA Basic Samples collection](https://collada.org/owl/browse.php?sess=0&parent=120&expand=1&order=name&curview=0&sortname=ASC).
 
