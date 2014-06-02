@@ -4167,6 +4167,8 @@ GLGE.Group.prototype.removeChild=function(child){
 				break;
 			}
 		}
+		if (!object)
+			return;
 	} else {
 		if (this.children.length <= child)
 			return;
@@ -4229,7 +4231,8 @@ GLGE.Group.prototype.setPickable=function(pickable){
 }
 
 
-})(GLGE);/*
+})(GLGE);
+/*
 GLGE WebGL Graphics Engine
 Copyright (c) 2010, Paul Brunt
 All rights reserved.
